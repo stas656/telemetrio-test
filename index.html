@@ -4,12 +4,17 @@
 <meta charset="utf-8" />
 <script>document.documentElement.classList.add('js')</script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Telemetr.io — Telegram Analytics Platform</title>
-<meta name="description" content="Telemetr.io is the analytics platform for Telegram. Find channels, track ads, analyze audiences and grow faster with data on millions of channels." />
+<title>Telemetr.io: Telegram Channel Analytics &amp; Ad Tracking</title>
+<meta name="description" content="Telegram analytics for advertisers and channel owners. Search millions of channels, detect fake subscribers and track every ad placement." />
+<link rel="canonical" href="https://stas656.github.io/telemetrio-test/" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://stas656.github.io/telemetrio-test/" />
+<meta property="og:site_name" content="Telemetr.io" />
+<meta name="twitter:card" content="summary_large_image" />
 <meta property="og:title" content="Telemetr.io — Telegram Analytics Platform" />
 <meta property="og:description" content="Find channels, track ads and analyze audiences across millions of Telegram channels." />
-<meta name="theme-color" content="#0b0d14" />
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%235b5bf6'/%3E%3Crect x='8' y='16' width='4' height='8' rx='2' fill='white'/%3E%3Crect x='14' y='11' width='4' height='13' rx='2' fill='white'/%3E%3Crect x='20' y='7' width='4' height='17' rx='2' fill='white'/%3E%3C/svg%3E" />
+<meta name="theme-color" content="#2563eb" />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%232563eb'/%3E%3Crect x='8' y='16' width='4' height='8' rx='2' fill='white'/%3E%3Crect x='14' y='11' width='4' height='13' rx='2' fill='white'/%3E%3Crect x='20' y='7' width='4' height='17' rx='2' fill='white'/%3E%3C/svg%3E" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet" />
@@ -21,27 +26,27 @@
   --text: #0b0d14;
   --muted: #5b6275;
   --border: #e6e8f0;
-  --brand: #5b5bf6;
-  --brand-2: #22b8f0;
+  --brand: #2563eb;
+  --brand-2: #06b6d4;
   --brand-ink: #ffffff;
   --accent: #10b981;
   --danger: #ef4444;
   --shadow: 0 1px 2px rgba(16,24,40,.04), 0 12px 32px -12px rgba(16,24,40,.12);
-  --glow: rgba(91,91,246,.18);
+  --glow: rgba(37,99,235,.14);
   --grid: rgba(11,13,20,.05);
   color-scheme: light;
 }
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
     --bg: #0b0d14; --bg-soft: #10131c; --bg-card: #131724; --text: #eef0f7; --muted: #9aa3b8;
-    --border: #232838; --brand: #7c7cff; --brand-2: #38c8ff; --glow: rgba(124,124,255,.22);
+    --border: #232838; --brand: #4f8cff; --brand-2: #22d3ee; --glow: rgba(79,140,255,.20);
     --shadow: 0 1px 2px rgba(0,0,0,.3), 0 20px 40px -20px rgba(0,0,0,.6); --grid: rgba(255,255,255,.04);
     color-scheme: dark;
   }
 }
 :root[data-theme="dark"] {
   --bg: #0b0d14; --bg-soft: #10131c; --bg-card: #131724; --text: #eef0f7; --muted: #9aa3b8;
-  --border: #232838; --brand: #7c7cff; --brand-2: #38c8ff; --glow: rgba(124,124,255,.22);
+  --border: #232838; --brand: #4f8cff; --brand-2: #22d3ee; --glow: rgba(79,140,255,.20);
   --shadow: 0 1px 2px rgba(0,0,0,.3), 0 20px 40px -20px rgba(0,0,0,.6); --grid: rgba(255,255,255,.04);
   color-scheme: dark;
 }
@@ -49,6 +54,11 @@
 html { scroll-behavior: smooth; }
 body { font-family: Inter, system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
 a { color: inherit; text-decoration: none; }
+:focus-visible { outline: 3px solid var(--brand); outline-offset: 3px; border-radius: 6px; }
+.search:focus-within { border-color: var(--brand); box-shadow: 0 0 0 4px color-mix(in srgb, var(--brand) 18%, transparent), var(--shadow); }
+.search input:focus-visible { outline: none; }
+.skip { position: absolute; left: 16px; top: -60px; z-index: 200; background: var(--text); color: var(--bg); padding: 10px 16px; border-radius: 10px; font-weight: 600; }
+.skip:focus { top: 12px; }
 img, svg { display: block; }
 .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
 @media (max-width: 640px) { .container { padding: 0 16px; } }
@@ -56,7 +66,8 @@ img, svg { display: block; }
 /* Buttons */
 .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; height: 44px; padding: 0 20px; border-radius: 12px; font-weight: 600; font-size: 15px; border: 1px solid transparent; cursor: pointer; transition: transform .15s, box-shadow .2s, background .2s; white-space: nowrap; font-family: inherit; }
 .btn:hover { transform: translateY(-1px); }
-.btn-primary { background: linear-gradient(135deg, var(--brand), #8b5cf6); color: #fff; box-shadow: 0 8px 24px -8px var(--brand); }
+.btn:active, .tab:active, .billing button:active { transform: scale(.97); }
+.btn-primary { background: var(--brand); color: #fff; box-shadow: 0 8px 24px -8px var(--brand); }
 .btn-primary:hover { box-shadow: 0 12px 32px -8px var(--brand); }
 .btn-ghost { background: var(--bg-card); border-color: var(--border); color: var(--text); }
 .btn-lg { height: 52px; padding: 0 26px; font-size: 16px; border-radius: 14px; }
@@ -66,7 +77,7 @@ img, svg { display: block; }
 .nav.scrolled { border-bottom-color: var(--border); }
 .nav-inner { display: flex; align-items: center; justify-content: space-between; height: 68px; gap: 24px; }
 .logo { display: flex; align-items: center; gap: 10px; font-weight: 800; font-size: 19px; letter-spacing: -.02em; }
-.logo-mark { width: 32px; height: 32px; border-radius: 9px; background: linear-gradient(135deg, var(--brand), #8b5cf6); display: grid; place-items: center; }
+.logo-mark { width: 32px; height: 32px; border-radius: 9px; background: var(--brand); display: grid; place-items: center; }
 .nav-links { display: flex; gap: 30px; font-size: 15px; color: var(--muted); font-weight: 500; }
 .nav-links a:hover { color: var(--text); }
 .nav-actions { display: flex; align-items: center; gap: 10px; }
@@ -87,8 +98,11 @@ img, svg { display: block; }
 .hero-inner { position: relative; z-index: 1; text-align: center; }
 .pill { display: inline-flex; align-items: center; gap: 8px; padding: 6px 14px 6px 6px; border-radius: 999px; border: 1px solid var(--border); background: var(--bg-card); font-size: 14px; color: var(--muted); font-weight: 500; box-shadow: var(--shadow); }
 .pill b { background: color-mix(in srgb, var(--brand) 14%, transparent); color: var(--brand); padding: 2px 10px; border-radius: 999px; font-weight: 600; font-size: 13px; }
+h1, h2, h3, summary { text-wrap: balance; }
+p, li { text-wrap: pretty; }
+.kpi strong, .amount strong, .stat strong, .metric-row b, .mini-row span { font-variant-numeric: tabular-nums; }
 h1 { font-size: clamp(40px, 6.4vw, 76px); line-height: 1.04; letter-spacing: -.04em; font-weight: 800; margin: 24px auto 20px; max-width: 920px; }
-.grad { background: linear-gradient(120deg, var(--brand) 10%, #a855f7 50%, var(--brand-2) 90%); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.grad { background: linear-gradient(120deg, var(--brand) 20%, var(--brand-2) 90%); -webkit-background-clip: text; background-clip: text; color: transparent; }
 .lead { font-size: clamp(17px, 2vw, 20px); color: var(--muted); max-width: 660px; margin: 0 auto; }
 
 .search { margin: 36px auto 0; max-width: 640px; display: flex; gap: 8px; padding: 8px; border-radius: 18px; background: var(--bg-card); border: 1px solid var(--border); box-shadow: var(--shadow); }
@@ -96,7 +110,7 @@ h1 { font-size: clamp(40px, 6.4vw, 76px); line-height: 1.04; letter-spacing: -.0
 .search input { flex: 1; border: 0; outline: 0; background: transparent; font: inherit; font-size: 16px; color: var(--text); min-width: 0; }
 .search input::placeholder { color: var(--muted); }
 .tags { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-top: 16px; font-size: 13px; color: var(--muted); }
-.tags button { font: inherit; border: 1px solid var(--border); background: transparent; color: var(--muted); padding: 4px 12px; border-radius: 999px; cursor: pointer; }
+.tags button { font: inherit; border: 1px solid var(--border); background: transparent; color: var(--muted); padding: 6px 14px; min-height: 32px; border-radius: 999px; cursor: pointer; }
 .tags button:hover { color: var(--text); border-color: var(--brand); }
 @media (max-width: 480px) { .nav-actions .btn-primary { height: 40px; padding: 0 14px; font-size: 14px; } .logo { font-size: 17px; } }
 @media (max-width: 560px) { .search { flex-direction: column; } .search .btn { width: 100%; } .search-field { height: 44px; } }
@@ -109,7 +123,7 @@ h1 { font-size: clamp(40px, 6.4vw, 76px); line-height: 1.04; letter-spacing: -.0
 
 /* Dashboard mock */
 .mock-wrap { position: relative; margin: 64px auto 0; max-width: 1080px; perspective: 2000px; }
-.mock { border-radius: 20px; border: 1px solid var(--border); background: var(--bg-card); box-shadow: 0 40px 100px -30px rgba(40,40,120,.35), var(--shadow); overflow: hidden; transform: rotateX(8deg); transform-origin: top; transition: transform .8s cubic-bezier(.2,.8,.2,1); }
+.mock { border-radius: 20px; border: 1px solid var(--border); background: var(--bg-card); box-shadow: 0 40px 100px -30px rgba(15,40,100,.35), var(--shadow); overflow: hidden; transform: rotateX(8deg); transform-origin: top; transition: transform .8s cubic-bezier(.2,.8,.2,1); }
 .mock.flat { transform: rotateX(0); }
 .mock-bar { display: flex; align-items: center; gap: 8px; padding: 12px 16px; border-bottom: 1px solid var(--border); background: var(--bg-soft); }
 .dot { width: 11px; height: 11px; border-radius: 50%; }
@@ -206,7 +220,7 @@ h2 { font-size: clamp(32px, 4.2vw, 50px); line-height: 1.1; letter-spacing: -.03
 
 /* Use cases tabs */
 .tabs { display: flex; justify-content: center; gap: 6px; flex-wrap: wrap; margin-bottom: 36px; }
-.tab { font: inherit; font-weight: 600; font-size: 15px; padding: 10px 18px; border-radius: 999px; border: 1px solid var(--border); background: var(--bg-card); color: var(--muted); cursor: pointer; transition: all .2s; }
+.tab { font: inherit; font-weight: 600; font-size: 15px; padding: 10px 18px; border-radius: 999px; border: 1px solid var(--border); background: var(--bg-card); color: var(--muted); cursor: pointer; transition: background-color .2s, color .2s, border-color .2s, transform .15s; }
 .tab.active { background: var(--text); color: var(--bg); border-color: var(--text); }
 .panel { display: none; grid-template-columns: 1fr 1fr; gap: 48px; align-items: center; background: var(--bg-soft); border: 1px solid var(--border); border-radius: 24px; padding: 48px; }
 .panel.active { display: grid; animation: fade .4s; }
@@ -248,7 +262,7 @@ h2 { font-size: clamp(32px, 4.2vw, 50px); line-height: 1.1; letter-spacing: -.03
 .prices { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; align-items: stretch; }
 .price { border: 1px solid var(--border); border-radius: 20px; padding: 28px 24px; background: var(--bg-card); display: flex; flex-direction: column; }
 .price.pop { border: 2px solid var(--brand); position: relative; box-shadow: 0 24px 60px -24px var(--brand); }
-.badge { position: absolute; top: -13px; left: 50%; transform: translateX(-50%); background: linear-gradient(135deg, var(--brand), #8b5cf6); color: #fff; font-size: 12px; font-weight: 700; padding: 4px 12px; border-radius: 999px; white-space: nowrap; }
+.badge { position: absolute; top: -13px; left: 50%; transform: translateX(-50%); background: var(--brand); color: #fff; font-size: 12px; font-weight: 700; padding: 4px 12px; border-radius: 999px; white-space: nowrap; }
 .price h3 { font-size: 18px; }
 .price .desc { color: var(--muted); font-size: 14px; min-height: 44px; margin-top: 4px; }
 .amount { margin: 20px 0; display: flex; align-items: baseline; gap: 4px; }
@@ -271,7 +285,7 @@ details[open] summary::after { transform: rotate(45deg); }
 details p { color: var(--muted); padding: 0 0 22px; font-size: 16px; }
 
 /* CTA */
-.cta { position: relative; overflow: hidden; border-radius: 28px; padding: 72px 32px; text-align: center; background: linear-gradient(135deg, #3b3bd6, #7c3aed 55%, #0ea5e9); color: #fff; }
+.cta { position: relative; overflow: hidden; border-radius: 28px; padding: 72px 32px; text-align: center; background: radial-gradient(120% 140% at 0% 0%, #1d4ed8 0%, #0b1530 55%, #062a3a 100%); color: #fff; border: 1px solid rgba(255,255,255,.08); }
 .cta::before { content: ""; position: absolute; inset: 0; background-image: linear-gradient(rgba(255,255,255,.08) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.08) 1px, transparent 1px); background-size: 40px 40px; mask-image: radial-gradient(ellipse at center, #000, transparent 75%); }
 .cta > * { position: relative; }
 .cta h2 { color: #fff; }
@@ -302,14 +316,16 @@ footer { border-top: 1px solid var(--border); padding: 64px 0 40px; margin-top: 
 .toast { position: fixed; bottom: 24px; left: 50%; transform: translate(-50%, 120px); background: var(--text); color: var(--bg); padding: 12px 20px; border-radius: 12px; font-size: 14px; font-weight: 500; transition: transform .3s; z-index: 100; max-width: calc(100% - 32px); }
 .toast.show { transform: translate(-50%, 0); }
 </style>
+<script type="application/ld+json">[{"@context": "https://schema.org", "@type": "Organization", "name": "Telemetr.io", "url": "https://telemetr.io"}, {"@context": "https://schema.org", "@type": "SoftwareApplication", "name": "Telemetr.io", "applicationCategory": "BusinessApplication", "operatingSystem": "Web", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}}, {"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Where does Telemetr.io get its data?", "acceptedAnswer": {"@type": "Answer", "text": "We continuously index public Telegram channels and posts. Channel owners can also connect their channels to share verified private statistics."}}, {"@type": "Question", "name": "How accurate is fake subscriber detection?", "acceptedAnswer": {"@type": "Answer", "text": "Our models analyze subscriber growth patterns, view dynamics and engagement anomalies. They catch the vast majority of bot campaigns and are retrained regularly as fraud tactics change."}}, {"@type": "Question", "name": "Can I try it before paying?", "acceptedAnswer": {"@type": "Answer", "text": "Yes. The Free plan is free forever, and all paid plans come with a 7-day trial. No credit card is required to start."}}, {"@type": "Question", "name": "Do you offer an API?", "acceptedAnswer": {"@type": "Answer", "text": "Yes. The REST API is included in the Business plan, and custom volumes are available on request."}}, {"@type": "Question", "name": "Can I add my own channel?", "acceptedAnswer": {"@type": "Answer", "text": "Absolutely. Add your channel for free, verify ownership and get a public media kit you can share with advertisers."}}, {"@type": "Question", "name": "Can I cancel anytime?", "acceptedAnswer": {"@type": "Answer", "text": "Yes. You can cancel or change your plan at any time from your account settings. No long-term contracts."}}]}]</script>
 </head>
 <body>
+<a class="skip" href="#main">Skip to content</a>
 
 <!-- NAV -->
 <header class="nav" id="nav">
   <div class="container nav-inner">
     <a href="#" class="logo" aria-label="Telemetr.io home">
-      <span class="logo-mark"><svg width="18" height="18" viewBox="0 0 18 18" fill="#fff"><rect x="1" y="9" width="4" height="8" rx="2"/><rect x="7" y="5" width="4" height="12" rx="2"/><rect x="13" y="1" width="4" height="16" rx="2"/></svg></span>
+      <span class="logo-mark"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 18 18" fill="#fff"><rect x="1" y="9" width="4" height="8" rx="2"/><rect x="7" y="5" width="4" height="12" rx="2"/><rect x="13" y="1" width="4" height="16" rx="2"/></svg></span>
       telemetr.io
     </a>
     <nav class="nav-links" id="navLinks">
@@ -321,18 +337,18 @@ footer { border-top: 1px solid var(--border); padding: 64px 0 40px; margin-top: 
     </nav>
     <div class="nav-actions">
       <button class="icon-btn" id="themeBtn" aria-label="Toggle theme">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+        <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
       </button>
       <a href="#pricing" class="btn btn-ghost">Log in</a>
       <a href="#pricing" class="btn btn-primary">Start free</a>
-      <button class="icon-btn menu-btn" id="menuBtn" aria-label="Open menu">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+      <button class="icon-btn menu-btn" id="menuBtn" aria-label="Menu" aria-expanded="false" aria-controls="navLinks">
+        <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
       </button>
     </div>
   </div>
 </header>
 
-<main>
+<main id="main">
 <!-- HERO -->
 <div class="hero">
   <div class="container hero-inner">
@@ -342,7 +358,7 @@ footer { border-top: 1px solid var(--border); padding: 64px 0 40px; margin-top: 
 
     <form class="search" id="searchForm">
       <label class="search-field">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="color:var(--muted)"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+        <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="color:var(--muted)"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
         <input id="q" type="text" placeholder="Search channels, posts or @username…" aria-label="Search Telegram channels" />
       </label>
       <button class="btn btn-primary" type="submit">Analyze free</button>
@@ -454,7 +470,7 @@ footer { border-top: 1px solid var(--border); padding: 64px 0 40px; margin-top: 
 
     <div class="bento">
       <div class="card span-4 reveal">
-        <div class="ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg></div>
+        <div class="ico"><svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg></div>
         <h3>The largest Telegram channel catalog</h3>
         <p>Filter 2.4M+ channels by category, language, country, reach, engagement and growth. Save lists and export in one click.</p>
         <div class="mini-table">
@@ -466,7 +482,7 @@ footer { border-top: 1px solid var(--border); padding: 64px 0 40px; margin-top: 
       </div>
 
       <div class="card span-2 reveal">
-        <div class="ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 2 4 6v6c0 5 3.5 9 8 10 4.5-1 8-5 8-10V6z"/><path d="m9 12 2 2 4-4"/></svg></div>
+        <div class="ico"><svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 2 4 6v6c0 5 3.5 9 8 10 4.5-1 8-5 8-10V6z"/><path d="m9 12 2 2 4-4"/></svg></div>
         <h3>Fake subscriber detection</h3>
         <p>Our models flag bot spikes and inflated views so you only pay for real people.</p>
         <div class="donut-wrap">
@@ -483,7 +499,7 @@ footer { border-top: 1px solid var(--border); padding: 64px 0 40px; margin-top: 
       </div>
 
       <div class="card span-3 reveal">
-        <div class="ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 11l18-8-8 18-2-8z"/></svg></div>
+        <div class="ico"><svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 11l18-8-8 18-2-8z"/></svg></div>
         <h3>Ad post tracking</h3>
         <p>See every ad placement across Telegram: who bought it, where it ran, and how it performed.</p>
         <div class="ad-feed">
@@ -494,7 +510,7 @@ footer { border-top: 1px solid var(--border); padding: 64px 0 40px; margin-top: 
       </div>
 
       <div class="card span-3 reveal">
-        <div class="ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 3v18h18"/><path d="m7 15 4-4 3 3 5-6"/></svg></div>
+        <div class="ico"><svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 3v18h18"/><path d="m7 15 4-4 3 3 5-6"/></svg></div>
         <h3>Growth &amp; reach analytics</h3>
         <p>Daily subscriber dynamics, post reach, views per hour and engagement, with up to 5 years of history.</p>
         <div class="bars">
@@ -503,17 +519,17 @@ footer { border-top: 1px solid var(--border); padding: 64px 0 40px; margin-top: 
       </div>
 
       <div class="card span-2 reveal">
-        <div class="ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="9" cy="8" r="4"/><path d="M2 21c0-4 3-7 7-7s7 3 7 7"/><path d="M17 11a3 3 0 1 0 0-6M22 21c0-3-2-5.5-5-6"/></svg></div>
+        <div class="ico"><svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="9" cy="8" r="4"/><path d="M2 21c0-4 3-7 7-7s7 3 7 7"/><path d="M17 11a3 3 0 1 0 0-6M22 21c0-3-2-5.5-5-6"/></svg></div>
         <h3>Audience insights</h3>
         <p>Language, geography, overlap with other channels and AI-generated audience summaries.</p>
       </div>
       <div class="card span-2 reveal">
-        <div class="ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg></div>
+        <div class="ico"><svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg></div>
         <h3>Mentions &amp; alerts</h3>
         <p>Get notified the moment your brand, keyword or competitor is mentioned anywhere on Telegram.</p>
       </div>
       <div class="card span-2 reveal">
-        <div class="ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 4h16v16H4z"/><path d="M4 9h16M9 20V9"/></svg></div>
+        <div class="ico"><svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 4h16v16H4z"/><path d="M4 9h16M9 20V9"/></svg></div>
         <h3>Reports &amp; exports</h3>
         <p>Branded PDF reports and CSV/Excel exports, ready for clients and stakeholders.</p>
       </div>
@@ -529,21 +545,21 @@ footer { border-top: 1px solid var(--border); padding: 64px 0 40px; margin-top: 
       <h2>Built for everyone who works with Telegram</h2>
       <p>Whether you're buying ads, selling them or studying the market, Telemetr.io gives you the full picture.</p>
     </div>
-    <div class="tabs" role="tablist">
-      <button class="tab active" data-tab="adv" role="tab">Advertisers</button>
-      <button class="tab" data-tab="own" role="tab">Channel owners</button>
-      <button class="tab" data-tab="agc" role="tab">Agencies</button>
-      <button class="tab" data-tab="res" role="tab">Researchers</button>
+    <div class="tabs" role="tablist" aria-label="Who Telemetr.io is for">
+      <button class="tab active" data-tab="adv" role="tab" id="tab-adv" aria-controls="adv" aria-selected="true" tabindex="0">Advertisers</button>
+      <button class="tab" data-tab="own" role="tab" id="tab-own" aria-controls="own" aria-selected="false" tabindex="-1">Channel owners</button>
+      <button class="tab" data-tab="agc" role="tab" id="tab-agc" aria-controls="agc" aria-selected="false" tabindex="-1">Agencies</button>
+      <button class="tab" data-tab="res" role="tab" id="tab-res" aria-controls="res" aria-selected="false" tabindex="-1">Researchers</button>
     </div>
 
-    <div class="panel active" id="adv" style="background:var(--bg)">
+    <div class="panel active" id="adv" role="tabpanel" aria-labelledby="tab-adv" style="background:var(--bg)">
       <div>
         <h3>Buy ads that actually convert</h3>
         <p>Stop overpaying for channels with bots and dead audiences. Pick placements with proven reach.</p>
         <ul class="checks">
-          <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="m5 12 5 5L20 7"/></svg>Compare real cost per view (CPM) across channels</li>
-          <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="m5 12 5 5L20 7"/></svg>Check fraud score before every purchase</li>
-          <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="m5 12 5 5L20 7"/></svg>Measure subscribers gained from each placement</li>
+          <li><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="m5 12 5 5L20 7"/></svg>Compare real cost per view (CPM) across channels</li>
+          <li><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="m5 12 5 5L20 7"/></svg>Check fraud score before every purchase</li>
+          <li><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="m5 12 5 5L20 7"/></svg>Measure subscribers gained from each placement</li>
         </ul>
         <a href="#pricing" class="btn btn-primary">Start planning campaigns</a>
       </div>
@@ -555,14 +571,14 @@ footer { border-top: 1px solid var(--border); padding: 64px 0 40px; margin-top: 
       </div>
     </div>
 
-    <div class="panel" id="own" style="background:var(--bg)">
+    <div class="panel" id="own" role="tabpanel" aria-labelledby="tab-own" style="background:var(--bg)">
       <div>
         <h3>Grow your channel and sell ads for more</h3>
         <p>Prove your audience is real and show advertisers the numbers they want to see.</p>
         <ul class="checks">
-          <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="m5 12 5 5L20 7"/></svg>Verified badge and public media kit</li>
-          <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="m5 12 5 5L20 7"/></svg>Benchmark against similar channels in your niche</li>
-          <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="m5 12 5 5L20 7"/></svg>Find the best time to post for maximum reach</li>
+          <li><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="m5 12 5 5L20 7"/></svg>Verified badge and public media kit</li>
+          <li><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="m5 12 5 5L20 7"/></svg>Benchmark against similar channels in your niche</li>
+          <li><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="m5 12 5 5L20 7"/></svg>Find the best time to post for maximum reach</li>
         </ul>
         <a href="#pricing" class="btn btn-primary">Claim your channel</a>
       </div>
@@ -574,14 +590,14 @@ footer { border-top: 1px solid var(--border); padding: 64px 0 40px; margin-top: 
       </div>
     </div>
 
-    <div class="panel" id="agc" style="background:var(--bg)">
+    <div class="panel" id="agc" role="tabpanel" aria-labelledby="tab-agc" style="background:var(--bg)">
       <div>
         <h3>Run client campaigns at scale</h3>
         <p>Manage dozens of brands, share live reports and keep your whole team in one workspace.</p>
         <ul class="checks">
-          <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="m5 12 5 5L20 7"/></svg>Team seats with roles and shared lists</li>
-          <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="m5 12 5 5L20 7"/></svg>White-label PDF reports for clients</li>
-          <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="m5 12 5 5L20 7"/></svg>Competitor ad intelligence across every niche</li>
+          <li><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="m5 12 5 5L20 7"/></svg>Team seats with roles and shared lists</li>
+          <li><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="m5 12 5 5L20 7"/></svg>White-label PDF reports for clients</li>
+          <li><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="m5 12 5 5L20 7"/></svg>Competitor ad intelligence across every niche</li>
         </ul>
         <a href="#pricing" class="btn btn-primary">Talk to sales</a>
       </div>
@@ -593,14 +609,14 @@ footer { border-top: 1px solid var(--border); padding: 64px 0 40px; margin-top: 
       </div>
     </div>
 
-    <div class="panel" id="res" style="background:var(--bg)">
+    <div class="panel" id="res" role="tabpanel" aria-labelledby="tab-res" style="background:var(--bg)">
       <div>
         <h3>Study the Telegram ecosystem</h3>
         <p>Full-text search across billions of posts and structured data access via API.</p>
         <ul class="checks">
-          <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="m5 12 5 5L20 7"/></svg>Search posts by keyword, date and channel</li>
-          <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="m5 12 5 5L20 7"/></svg>Track narratives and citation networks</li>
-          <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="m5 12 5 5L20 7"/></svg>Bulk data export via REST API</li>
+          <li><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="m5 12 5 5L20 7"/></svg>Search posts by keyword, date and channel</li>
+          <li><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="m5 12 5 5L20 7"/></svg>Track narratives and citation networks</li>
+          <li><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="m5 12 5 5L20 7"/></svg>Bulk data export via REST API</li>
         </ul>
         <a href="#api" class="btn btn-primary">Explore the API</a>
       </div>
@@ -630,7 +646,7 @@ footer { border-top: 1px solid var(--border); padding: 64px 0 40px; margin-top: 
     <div class="bento" style="margin-top:16px">
       <div class="card span-6 api-card reveal">
         <div>
-          <div class="ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="m8 6-6 6 6 6M16 6l6 6-6 6"/></svg></div>
+          <div class="ico"><svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="m8 6-6 6 6 6M16 6l6 6-6 6"/></svg></div>
           <h3 style="font-size:26px">Developer-friendly API</h3>
           <p>Plug Telegram data straight into your product, BI tool or data warehouse. Clean JSON, generous rate limits and clear docs.</p>
           <a href="#pricing" class="btn btn-ghost" style="margin-top:20px">Get an API key →</a>
@@ -677,9 +693,9 @@ curl https://api.telemetr.io/v1/channels/stats \
       <span class="eyebrow">Pricing</span>
       <h2>Simple pricing that scales with you</h2>
       <p>Start free. Upgrade when you need more. Cancel anytime.</p>
-      <div class="billing" id="billing">
-        <button data-b="m">Monthly</button>
-        <button data-b="y" class="on">Yearly <span class="save">−20%</span></button>
+      <div class="billing" id="billing" role="group" aria-label="Billing period">
+        <button data-b="m" aria-pressed="false">Monthly</button>
+        <button data-b="y" class="on" aria-pressed="true">Yearly <span class="save">−20%</span></button>
       </div>
     </div>
     <div class="prices">
@@ -688,9 +704,9 @@ curl https://api.telemetr.io/v1/channels/stats \
         <div class="amount"><strong>$0</strong><span>/ month</span></div>
         <a href="#" class="btn btn-ghost">Get started</a>
         <ul>
-          <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="m5 12 5 5L20 7"/></svg>Channel catalog search</li>
-          <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="m5 12 5 5L20 7"/></svg>Basic channel stats</li>
-          <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="m5 12 5 5L20 7"/></svg>30 days of history</li>
+          <li><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="m5 12 5 5L20 7"/></svg>Channel catalog search</li>
+          <li><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="m5 12 5 5L20 7"/></svg>Basic channel stats</li>
+          <li><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="m5 12 5 5L20 7"/></svg>30 days of history</li>
         </ul>
       </div>
       <div class="price reveal">
@@ -698,10 +714,10 @@ curl https://api.telemetr.io/v1/channels/stats \
         <div class="amount"><strong data-m="29" data-y="23">$23</strong><span>/ month</span></div>
         <a href="#" class="btn btn-ghost">Start 7-day trial</a>
         <ul>
-          <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="m5 12 5 5L20 7"/></svg>Everything in Free</li>
-          <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="m5 12 5 5L20 7"/></svg>Fake subscriber detection</li>
-          <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="m5 12 5 5L20 7"/></svg>1 year of history</li>
-          <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="m5 12 5 5L20 7"/></svg>10 saved lists</li>
+          <li><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="m5 12 5 5L20 7"/></svg>Everything in Free</li>
+          <li><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="m5 12 5 5L20 7"/></svg>Fake subscriber detection</li>
+          <li><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="m5 12 5 5L20 7"/></svg>1 year of history</li>
+          <li><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="m5 12 5 5L20 7"/></svg>10 saved lists</li>
         </ul>
       </div>
       <div class="price pop reveal">
@@ -710,11 +726,11 @@ curl https://api.telemetr.io/v1/channels/stats \
         <div class="amount"><strong data-m="99" data-y="79">$79</strong><span>/ month</span></div>
         <a href="#" class="btn btn-primary">Start 7-day trial</a>
         <ul>
-          <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="m5 12 5 5L20 7"/></svg>Everything in Starter</li>
-          <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="m5 12 5 5L20 7"/></svg>Ad post tracking</li>
-          <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="m5 12 5 5L20 7"/></svg>Mentions &amp; alerts</li>
-          <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="m5 12 5 5L20 7"/></svg>Full history &amp; exports</li>
-          <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="m5 12 5 5L20 7"/></svg>AI audience insights</li>
+          <li><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="m5 12 5 5L20 7"/></svg>Everything in Starter</li>
+          <li><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="m5 12 5 5L20 7"/></svg>Ad post tracking</li>
+          <li><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="m5 12 5 5L20 7"/></svg>Mentions &amp; alerts</li>
+          <li><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="m5 12 5 5L20 7"/></svg>Full history &amp; exports</li>
+          <li><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="m5 12 5 5L20 7"/></svg>AI audience insights</li>
         </ul>
       </div>
       <div class="price reveal">
@@ -722,11 +738,11 @@ curl https://api.telemetr.io/v1/channels/stats \
         <div class="amount"><strong data-m="299" data-y="239">$239</strong><span>/ month</span></div>
         <a href="#" class="btn btn-ghost">Contact sales</a>
         <ul>
-          <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="m5 12 5 5L20 7"/></svg>Everything in Pro</li>
-          <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="m5 12 5 5L20 7"/></svg>API access</li>
-          <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="m5 12 5 5L20 7"/></svg>5 team seats</li>
-          <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="m5 12 5 5L20 7"/></svg>White-label reports</li>
-          <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="m5 12 5 5L20 7"/></svg>Priority support</li>
+          <li><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="m5 12 5 5L20 7"/></svg>Everything in Pro</li>
+          <li><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="m5 12 5 5L20 7"/></svg>API access</li>
+          <li><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="m5 12 5 5L20 7"/></svg>5 team seats</li>
+          <li><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="m5 12 5 5L20 7"/></svg>White-label reports</li>
+          <li><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="m5 12 5 5L20 7"/></svg>Priority support</li>
         </ul>
       </div>
     </div>
@@ -770,12 +786,12 @@ curl https://api.telemetr.io/v1/channels/stats \
   <div class="container">
     <div class="foot">
       <div>
-        <a href="#" class="logo"><span class="logo-mark"><svg width="18" height="18" viewBox="0 0 18 18" fill="#fff"><rect x="1" y="9" width="4" height="8" rx="2"/><rect x="7" y="5" width="4" height="12" rx="2"/><rect x="13" y="1" width="4" height="16" rx="2"/></svg></span>telemetr.io</a>
+        <a href="#" class="logo"><span class="logo-mark"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 18 18" fill="#fff"><rect x="1" y="9" width="4" height="8" rx="2"/><rect x="7" y="5" width="4" height="12" rx="2"/><rect x="13" y="1" width="4" height="16" rx="2"/></svg></span>telemetr.io</a>
         <p>The analytics platform for Telegram. Research, plan and measure, all in one place.</p>
         <div class="socials">
-          <a class="icon-btn" href="#" aria-label="Telegram"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M21.9 4.3 18.7 19.5c-.2 1-.9 1.3-1.7.8l-4.8-3.6-2.3 2.2c-.3.3-.5.5-1 .5l.3-4.9 9-8.1c.4-.3-.1-.5-.6-.2L6.5 13.2 1.8 11.7c-1-.3-1-1 .2-1.5L20.6 3c.9-.3 1.6.2 1.3 1.3z"/></svg></a>
-          <a class="icon-btn" href="#" aria-label="X"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.8 3h3.3l-7.2 8.2L22.4 21h-6.6l-5.2-6.8L4.7 21H1.4l7.7-8.8L1 3h6.8l4.7 6.2zm-1.2 16h1.8L7.5 4.9H5.6z"/></svg></a>
-          <a class="icon-btn" href="#" aria-label="LinkedIn"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5zM3 9h4v12H3zM9 9h3.8v1.7h.1c.5-1 1.8-2 3.8-2 4 0 4.8 2.7 4.8 6.1V21h-4v-5.5c0-1.3 0-3-1.8-3s-2.1 1.4-2.1 2.9V21H9z"/></svg></a>
+          <a class="icon-btn" href="#" aria-label="Telegram"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M21.9 4.3 18.7 19.5c-.2 1-.9 1.3-1.7.8l-4.8-3.6-2.3 2.2c-.3.3-.5.5-1 .5l.3-4.9 9-8.1c.4-.3-.1-.5-.6-.2L6.5 13.2 1.8 11.7c-1-.3-1-1 .2-1.5L20.6 3c.9-.3 1.6.2 1.3 1.3z"/></svg></a>
+          <a class="icon-btn" href="#" aria-label="X"><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.8 3h3.3l-7.2 8.2L22.4 21h-6.6l-5.2-6.8L4.7 21H1.4l7.7-8.8L1 3h6.8l4.7 6.2zm-1.2 16h1.8L7.5 4.9H5.6z"/></svg></a>
+          <a class="icon-btn" href="#" aria-label="LinkedIn"><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5zM3 9h4v12H3zM9 9h3.8v1.7h.1c.5-1 1.8-2 3.8-2 4 0 4.8 2.7 4.8 6.1V21h-4v-5.5c0-1.3 0-3-1.8-3s-2.1 1.4-2.1 2.9V21H9z"/></svg></a>
         </div>
       </div>
       <div><h4>Product</h4><ul><li><a href="#features">Channel catalog</a></li><li><a href="#features">Ad tracking</a></li><li><a href="#features">Fraud detection</a></li><li><a href="#api">API</a></li></ul></div>
@@ -790,7 +806,7 @@ curl https://api.telemetr.io/v1/channels/stats \
   </div>
 </footer>
 
-<div class="toast" id="toast"></div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
 
 <script>
 (() => {
@@ -804,8 +820,9 @@ curl https://api.telemetr.io/v1/channels/stats \
 
   const nav = document.getElementById('nav');
   addEventListener('scroll', () => nav.classList.toggle('scrolled', scrollY > 8), { passive: true });
-  document.getElementById('menuBtn').addEventListener('click', () => nav.classList.toggle('open'));
-  document.querySelectorAll('#navLinks a').forEach(a => a.addEventListener('click', () => nav.classList.remove('open')));
+  const menuBtn = document.getElementById('menuBtn');
+  menuBtn.addEventListener('click', () => menuBtn.setAttribute('aria-expanded', nav.classList.toggle('open')));
+  document.querySelectorAll('#navLinks a').forEach(a => a.addEventListener('click', () => { nav.classList.remove('open'); menuBtn.setAttribute('aria-expanded', 'false'); }));
 
   // Flatten the hero dashboard on load
   setTimeout(() => document.getElementById('mock').classList.add('flat'), 300);
@@ -844,14 +861,24 @@ curl https://api.telemetr.io/v1/channels/stats \
   document.querySelectorAll('.kpi [data-count]').forEach(count);
 
   // Tabs
-  document.querySelectorAll('.tab').forEach(t => t.addEventListener('click', () => {
-    document.querySelectorAll('.tab').forEach(x => x.classList.toggle('active', x === t));
+  const tabs = [...document.querySelectorAll('.tab')];
+  const select = t => {
+    tabs.forEach(x => { const on = x === t; x.classList.toggle('active', on); x.setAttribute('aria-selected', on); x.tabIndex = on ? 0 : -1; });
     document.querySelectorAll('.panel').forEach(p => p.classList.toggle('active', p.id === t.dataset.tab));
-  }));
+  };
+  tabs.forEach((t, i) => {
+    t.addEventListener('click', () => select(t));
+    t.addEventListener('keydown', e => {
+      const d = { ArrowRight: 1, ArrowLeft: -1 }[e.key];
+      if (!d) return;
+      const n = tabs[(i + d + tabs.length) % tabs.length];
+      select(n); n.focus(); e.preventDefault();
+    });
+  });
 
   // Billing toggle
   document.querySelectorAll('#billing button').forEach(b => b.addEventListener('click', () => {
-    document.querySelectorAll('#billing button').forEach(x => x.classList.toggle('on', x === b));
+    document.querySelectorAll('#billing button').forEach(x => { x.classList.toggle('on', x === b); x.setAttribute('aria-pressed', x === b); });
     document.querySelectorAll('[data-m]').forEach(p => p.textContent = '$' + p.dataset[b.dataset.b]);
   }));
 
