@@ -1,0 +1,52 @@
+{
+  "_note": "Prepared demonstration content. Selecting a scenario switches between these; nothing is searched live. Names are fictional and rows have no links. Before launch, prefer a verified example (set verified: true and retrievedAt) and use only countries and categories that exist in the catalog.",
+  "verified": false,
+  "retrievedAt": null,
+  "scenarios": [
+    {
+      "id": "business-ua",
+      "label": "Business in Ukraine",
+      "prompt": "Find Telegram channels about business and marketing in Ukraine.",
+      "response": "Here’s an example shortlist matching your criteria.",
+      "rows": [
+        { "name": "Demo: Business", "country": "Ukraine", "category": "Business" },
+        { "name": "Demo: Marketing", "country": "Ukraine", "category": "Marketing" },
+        { "name": "Demo: Business Digest", "country": "Ukraine", "category": "Business" },
+        { "name": "Demo: Marketing Notes", "country": "Ukraine", "category": "Marketing" }
+      ],
+      "followup": "Keep only the marketing channels.",
+      "followupResponse": "Here are the channels in the Marketing category.",
+      "keepCategory": "Marketing"
+    },
+    {
+      "id": "technology-pl",
+      "label": "Technology in Poland",
+      "prompt": "Find Telegram channels about technology and startups in Poland.",
+      "response": "Here’s an example shortlist matching your criteria.",
+      "rows": [
+        { "name": "Demo: Technology", "country": "Poland", "category": "Technology" },
+        { "name": "Demo: Startups", "country": "Poland", "category": "Startups" },
+        { "name": "Demo: Tech Weekly", "country": "Poland", "category": "Technology" },
+        { "name": "Demo: Startup Notes", "country": "Poland", "category": "Startups" }
+      ],
+      "followup": "Keep only the technology channels.",
+      "followupResponse": "Here are the channels in the Technology category.",
+      "keepCategory": "Technology"
+    },
+    {
+      "id": "education-de",
+      "label": "Education in Germany",
+      "prompt": "Find Telegram channels about education and careers in Germany.",
+      "response": "Here’s an example shortlist matching your criteria.",
+      "rows": [
+        { "name": "Demo: Education", "country": "Germany", "category": "Education" },
+        { "name": "Demo: Careers", "country": "Germany", "category": "Careers" },
+        { "name": "Demo: Study Notes", "country": "Germany", "category": "Education" },
+        { "name": "Demo: Career Digest", "country": "Germany", "category": "Careers" }
+      ],
+      "followup": "Keep only the education channels.",
+      "followupResponse": "Here are the channels in the Education category.",
+      "keepCategory": "Education"
+    }
+  ]
+}

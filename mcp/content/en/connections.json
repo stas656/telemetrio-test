@@ -1,0 +1,44 @@
+{
+  "_note": "Per-assistant connection values. Fill with VERIFIED values only — never guess server addresses, directory listings, install links or auth methods. null / [] = not verified yet: shown as a launch dependency in preview, and the production build fails.",
+  "_fields": {
+    "status": "available | beta | unavailable",
+    "connectionUrl": "Where this assistant's 'Connect to …' button goes inside the setup card (direct install / connector page).",
+    "heroCtaTarget": "setup = page CTAs open this assistant's setup card (default). connection = page CTAs go straight to connectionUrl.",
+    "serverUrl": "Optional MCP server address users paste during manual setup (shown with a copy button).",
+    "docsUrl": "Setup documentation.",
+    "authMethod": "How the user authenticates (text).",
+    "accountRequirements": "Which Claude / ChatGPT account or plan is required (text).",
+    "restrictions": "Known restrictions, or 'None known' once verified (text).",
+    "steps": "Ordered setup steps (array of text).",
+    "disconnectSteps": "Ordered disconnect steps (array of text).",
+    "firstPromptId": "Prompt id from prompts.json shown as the first prompt."
+  },
+  "assistants": {
+    "claude": {
+      "status": null,
+      "connectionUrl": null,
+      "heroCtaTarget": "setup",
+      "serverUrl": null,
+      "docsUrl": null,
+      "authMethod": null,
+      "accountRequirements": null,
+      "restrictions": null,
+      "steps": [],
+      "disconnectSteps": [],
+      "firstPromptId": "p1"
+    },
+    "chatgpt": {
+      "status": null,
+      "connectionUrl": null,
+      "heroCtaTarget": "setup",
+      "serverUrl": null,
+      "docsUrl": null,
+      "authMethod": null,
+      "accountRequirements": null,
+      "restrictions": null,
+      "steps": [],
+      "disconnectSteps": [],
+      "firstPromptId": "p1"
+    }
+  }
+}

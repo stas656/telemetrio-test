@@ -18,62 +18,10 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="assets/tokens.css" />
 <style>
-/* Telemetrio Design System 2.0 tokens (Figma: Design system / Color, Shadow, Typography, Spacing) */
+/* Design tokens: assets/tokens.css */
 :root {
-  /* Alias color tokens */
-  --text-base-primary: #1c1e21;
-  --text-base-secondary: #666f79;
-  --text-base-tertiary: #7d8995;
-  --text-base-quaternary: #ffffff;
-  --text-accent: #006dda;
-  --text-info: #0059b2;
-  --text-success: #047a56;
-  --text-danger: #a92121;
-  --text-link-accent-hover: #3b8fe3;
-  --text-link-base: #43494f;
-  --border-base-primary: #f6f7f8;
-  --border-base-secondary: #e7eaed;
-  --border-base-tertiary: #c3cbd2;
-  --border-accent: #006dda;
-  --border-select: #3b8fe3;
-  --icon-base-primary: #43494f;
-  --icon-base-secondary: #7d8995;
-  --icon-accent-primary: #006dda;
-  --icon-accent-secondary: #c7dff7;
-  --icon-success: #059669;
-  --icon-danger: #cf2929;
-  --icon-warning: #e3862b;
-  --focused-accent-primary: #3b8fe3;
-  --bg-base-primary: #ffffff;
-  --bg-base-secondary: #f6f7f8;
-  --bg-base-tertiary: #e7eaed;
-  --bg-accent: #006dda;
-  --bg-accent-hover: #3b8fe3;
-  --bg-accent-selected: #ebf3fc;
-  --bg-success: #ebf7f3;
-  --bg-danger: #fbeeee;
-  --bg-label-primary-10: #2595c8;
-  --bg-label-secondary-01: #dfe5fc;
-  --bg-label-secondary-10: #d1effd;
-  --text-label-01: #44579a;
-  --text-label-10: #1c739b;
-  --bg-gradient-primary: linear-gradient(180deg, rgba(195,203,210,0) 0%, rgba(195,203,210,.04) 100%), #ffffff;
-  --bg-data-01: #6c8af3; --bg-data-02: #e976d6; --bg-data-03: #41ddc1; --bg-data-04: #e289f2;
-  --bg-data-05: #f5c324; --bg-data-06: #9264f3; --bg-data-07: #f36c95; --bg-data-08: #f3b56c;
-  --bg-data-09: #39c86a; --bg-data-10: #2db6f5; --bg-data-11: #bcd04b; --bg-data-12: #ff8a65;
-  /* Shadows */
-  --shadow-sm: 0 2px 4px 1px rgba(4,4,5,.04), 0 0 1px 0 rgba(4,4,5,.12);
-  --shadow-default: 0 2px 8px 1px rgba(4,4,5,.08), 0 0 1px 0 rgba(4,4,5,.12);
-  --shadow-md: 0 4px 12px 1px rgba(4,4,5,.08), 0 0 1px 0 rgba(4,4,5,.12);
-  --shadow-lg: 0 4px 14px 1px rgba(4,4,5,.12), 0 0 1px 0 rgba(4,4,5,.16);
-  --shadow-xl: 0 8px 16px 1px rgba(0,3,20,.12), 0 0 1px 0 rgba(4,4,5,.16);
-  --shadow-2xl: 0 2px 8px 1px rgba(4,4,5,.08), 0 0 1px 0 rgba(4,4,5,.12), 0 8px 20px 8px rgba(4,4,5,.10);
-  --shadow-custom-sm: 0 0 0 1px rgba(28,30,33,.08), 0 2px 4px 1px rgba(4,4,5,.04), 0 0 1px 0 rgba(4,4,5,.12);
-  /* Typefaces: Inter for product, Gilroy ExtraBold for marketing headlines */
-  --font-product: Inter, system-ui, -apple-system, sans-serif;
-  --font-marketing: Gilroy, Inter, system-ui, sans-serif;
-
   /* Page aliases */
   --bg: var(--bg-base-primary);
   --bg-soft: var(--bg-base-secondary);

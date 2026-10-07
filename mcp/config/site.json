@@ -1,0 +1,16 @@
+{
+  "_note": "Site-level settings. productionUrl, privacyUrl and termsUrl are required for a production build.",
+  "previewUrl": "https://stas656.github.io/telemetrio-test/mcp/",
+  "productionUrl": null,
+  "telemetrioUrl": "https://telemetr.io",
+  "privacyUrl": null,
+  "termsUrl": null,
+  "ogImage": null,
+  "connectionStatusEndpoint": null,
+  "analytics": {
+    "dataLayer": "dataLayer"
+  },
+  "experiments": {
+    "headline": { "param": "hl", "variants": ["a", "b"], "default": "a" }
+  }
+}

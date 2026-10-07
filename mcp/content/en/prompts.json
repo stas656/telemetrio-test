@@ -1,0 +1,20 @@
+{
+  "_note": "Prompt examples. Map category wording to the actual Telemetrio catalog taxonomy. Prompts with a 'feature' key appear only when that flag is true in config/features.json.",
+  "prompts": [
+    { "id": "uc-placements", "group": "useCase", "text": "Find education channels in Ukraine that I can research for potential advertising placements." },
+    { "id": "uc-explore", "group": "useCase", "text": "Show me Telegram channels about technology in Poland." },
+    { "id": "uc-shortlist", "group": "useCase", "text": "Put these results in a table with channel name, country, category, and link." },
+
+    { "id": "p1", "group": "library", "text": "Find Telegram channels about marketing in Ukraine." },
+    { "id": "p2", "group": "library", "text": "Show me technology channels in Poland." },
+    { "id": "p3", "group": "library", "text": "Find channels in the Education category in Germany." },
+    { "id": "p4", "group": "library", "text": "Find business channels in Ukraine and Poland. Group the results by country." },
+    { "id": "p5", "group": "library", "text": "Keep only channels in the Marketing category from these results." },
+    { "id": "p6", "group": "library", "text": "Organize the results into a table and include a link to each channel." },
+
+    { "id": "g-compare", "group": "library", "feature": "channelComparison", "text": "Compare these channels by subscriber count and average post views over the same period." },
+    { "id": "g-mentions", "group": "library", "feature": "brandMentions", "text": "Find available mentions of [brand] from the past 30 days." },
+    { "id": "g-ads", "group": "library", "feature": "competitorResearch", "text": "Show advertising posts mentioning [competitor] from the past month." },
+    { "id": "g-content", "group": "library", "feature": "contentAnalysis", "text": "Analyze the most-viewed posts from these channels." }
+  ]
+}

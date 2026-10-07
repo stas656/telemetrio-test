@@ -1,0 +1,11 @@
+{
+  "_note": "Feature availability flags. Turn a flag on only after the capability is verified in the MCP integration. Off = hidden from the page (use case card and gated prompts).",
+  "channelComparison": false,
+  "advertisingShortlist": false,
+  "competitorResearch": false,
+  "brandMentions": false,
+  "growthAnalysis": false,
+  "contentAnalysis": false,
+  "reportPreparation": false,
+  "recurringResearch": false
+}

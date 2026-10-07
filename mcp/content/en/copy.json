@@ -1,0 +1,145 @@
+{
+  "lang": "en",
+  "meta": {
+    "title": "Telemetrio MCP — Telegram Channel Search in Claude & ChatGPT",
+    "description": "Find Telegram channels by country and category directly in Claude or ChatGPT. Connect Telemetrio MCP and refine your search through conversation."
+  },
+  "common": {
+    "skip": "Skip to content",
+    "copyPrompt": "Copy prompt",
+    "copied": "Prompt copied",
+    "copyFailed": "Couldn’t copy automatically. The prompt is selected — press Ctrl+C (⌘C on Mac).",
+    "menuOpen": "Open menu",
+    "menuClose": "Close menu",
+    "opensNewTab": "(opens in a new tab)",
+    "previewBar": "Preview build. Highlighted notes mark values that must be verified before launch. This page is not indexed."
+  },
+  "assistants": {
+    "claude": { "name": "Claude", "connect": "Connect to Claude" },
+    "chatgpt": { "name": "ChatGPT", "connect": "Connect to ChatGPT" }
+  },
+  "nav": {
+    "homeLabel": "Telemetrio MCP home",
+    "badge": "MCP",
+    "label": "Main",
+    "links": [
+      { "label": "Use cases", "href": "#use-cases" },
+      { "label": "Example prompts", "href": "#prompts" },
+      { "label": "How to connect", "href": "#connect" },
+      { "label": "FAQ", "href": "#faq" }
+    ]
+  },
+  "hero": {
+    "eyebrow": "Telemetrio MCP · For Claude and ChatGPT",
+    "headline": {
+      "a": "Find the right Telegram channels directly in Claude and ChatGPT",
+      "b": "Find Telegram channels for your next campaign in Claude and ChatGPT"
+    },
+    "lead": "Describe the country and topic you’re looking for. Get a shortlist from Telemetrio’s database and refine your search through conversation.",
+    "ctaGroupLabel": "Connect Telemetrio to your assistant",
+    "exampleLink": "See an example",
+    "microcopy": "Telemetrio data, inside your AI assistant.",
+    "capabilities": ["Search by geography", "Search by category", "Refine in conversation"]
+  },
+  "demo": {
+    "title": "Example conversation",
+    "badge": "Illustrative example",
+    "selectorLabel": "Example searches",
+    "you": "You",
+    "assistant": "Assistant",
+    "source": "Telemetrio data",
+    "columns": { "channel": "Channel", "country": "Country", "category": "Category", "link": "Link" },
+    "linkPlaceholder": "Profile link",
+    "linkNote": "shown in real results",
+    "footnote": "Illustrative example with fictional channel names. Real results come from Telemetrio’s database and include a link for each channel.",
+    "ctaHeading": "Start with your own search"
+  },
+  "how": {
+    "eyebrow": "How it works",
+    "heading": "From a search request to a channel shortlist",
+    "body": "Telemetrio finds channels in its database. Claude or ChatGPT helps you define your criteria, organize the results, and refine your search.",
+    "steps": [
+      { "title": "Describe what you need", "text": "Specify the country, topic, and purpose of your search." },
+      { "title": "Review your shortlist", "text": "Explore channels matching your criteria." },
+      { "title": "Refine the results", "text": "Change the geography, narrow the category, or ask for a table." }
+    ],
+    "closing": "Telemetrio provides the data. Your AI assistant helps you work with it."
+  },
+  "useCases": {
+    "eyebrow": "Use cases",
+    "heading": "What you can use it for",
+    "promptLabel": "Example prompt",
+    "items": [
+      { "id": "placements", "icon": "megaphone", "title": "Find potential advertising placements", "text": "Start with your campaign’s country and topic. Get a list of channels to evaluate.", "promptId": "uc-placements" },
+      { "id": "explore", "icon": "compass", "title": "Explore a new category", "text": "Discover channels in a specific category and country.", "promptId": "uc-explore" },
+      { "id": "shortlist", "icon": "table", "title": "Prepare a shortlist for your team", "text": "Organize the channels you find into a clear table with categories and links.", "promptId": "uc-shortlist" },
+      { "id": "compare", "icon": "compare", "feature": "channelComparison", "title": "Compare channels before booking", "text": "Compare available metrics and identify placements worth investigating.", "promptId": "g-compare" },
+      { "id": "competitors", "icon": "search", "feature": "competitorResearch", "title": "Research competitor advertising", "text": "Find available advertising posts and explore the messages and placements other brands use.", "promptId": "g-ads" },
+      { "id": "mentions", "icon": "mention", "feature": "brandMentions", "title": "Find brand mentions", "text": "Review matching posts with dates and source links.", "promptId": "g-mentions" }
+    ]
+  },
+  "promptLibrary": {
+    "eyebrow": "Example prompts",
+    "heading": "Start with one prompt",
+    "lead": "Choose an example, copy it, and send it to your assistant after connecting Telemetrio.",
+    "connectLead": "Not connected yet?"
+  },
+  "connect": {
+    "eyebrow": "How to connect",
+    "heading": "Connect Telemetrio to your assistant",
+    "lead": "Setup differs between Claude and ChatGPT. Follow the steps for the assistant you use.",
+    "labels": {
+      "steps": "How to add Telemetrio",
+      "serverUrl": "Server address",
+      "auth": "Authentication",
+      "account": "Account requirements",
+      "restrictions": "Known restrictions",
+      "firstPrompt": "Your first prompt",
+      "docs": "Setup documentation",
+      "copyAddress": "Copy address",
+      "addressCopied": "Address copied"
+    },
+    "status": { "available": "Available", "beta": "Beta", "unavailable": "Not yet available" },
+    "afterConnect": "After connecting, send this prompt to your assistant.",
+    "connected": "Telemetrio is connected. Try your first search."
+  },
+  "access": {
+    "eyebrow": "Access",
+    "heading": "What you need",
+    "labels": {
+      "plan": "Telemetrio plan",
+      "usageLimits": "Usage limits",
+      "trial": "Trial",
+      "claude": "Claude account",
+      "chatgpt": "ChatGPT account"
+    },
+    "compatibility": "Claude and ChatGPT logos indicate compatibility, not endorsement."
+  },
+  "faq": {
+    "eyebrow": "FAQ",
+    "heading": "Questions and answers",
+    "items": [
+      { "id": "what", "q": "What is Telemetrio MCP?", "a": "Telemetrio MCP connects Claude or ChatGPT to available Telemetrio data so you can search Telegram channels through conversation." },
+      { "id": "search", "q": "What can I search for?", "a": "Channels matching your geography and category. You can combine criteria and refine them as the conversation continues." },
+      { "id": "coverage", "q": "Can I find every Telegram channel?", "a": "Search results depend on the channels available in Telemetrio’s database. Some channels may be missing or have incomplete data." },
+      { "id": "geography", "q": "What does a channel’s geography mean?", "a": "It refers to the channel’s geographic classification in Telemetrio. It does not mean that every subscriber is located in that country.", "verify": "Adjust to the verified geographic data definition." },
+      { "id": "coding", "q": "Do I need coding skills?", "a": null, "pending": "Write after both connection flows are validated. Only say coding is unnecessary if that is confirmed." },
+      { "id": "cost", "q": "How much does it cost?", "a": null, "source": "access.faqCost", "pending": "Approved Telemetrio access terms (access.json → faqCost)." },
+      { "id": "freshness", "q": "How current is the data?", "a": "Freshness varies by channel and metric. When the source provides an update time, it is shown alongside the data." },
+      { "id": "buying", "q": "Can it automatically buy advertising?", "a": "The basic workflow helps you discover channels for further evaluation. Purchasing advertising placements is not included in that workflow." },
+      { "id": "disconnect", "q": "How do I disconnect Telemetrio?", "a": null, "source": "connections.disconnectSteps", "pending": "Verified disconnect steps for each assistant (connections.json → disconnectSteps)." }
+    ]
+  },
+  "final": {
+    "heading": "Which Telegram channels are you looking for?",
+    "text": "Connect Telemetrio and start with a country and topic. Refine the results as you go."
+  },
+  "footer": {
+    "positioning": "Telemetrio connects Telegram channel data to your AI assistant. Describe the channels you need, review the results, and refine your search through conversation.",
+    "telemetrioLink": "Telemetrio website",
+    "privacy": "Privacy policy",
+    "terms": "Terms of use",
+    "trademarks": "Claude is a trademark of Anthropic. ChatGPT is a trademark of OpenAI. Their logos indicate compatibility, not endorsement.",
+    "copyright": "© 2026 Telemetr.io"
+  }
+}
