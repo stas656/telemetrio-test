@@ -1,0 +1,25 @@
+{
+  "_note": "Options for the prompt builder on the alternative page. The page only composes text to copy; it never runs a search. Countries and categories must exist in the Telemetrio catalog — set verified: true after checking (production build requires it).",
+  "verified": false,
+  "category": [
+    { "id": "marketing", "label": "marketing", "name": "Marketing" },
+    { "id": "business", "label": "business", "name": "Business" },
+    { "id": "technology", "label": "technology", "name": "Technology" },
+    { "id": "education", "label": "education", "name": "Education" }
+  ],
+  "country": [
+    { "id": "ua", "label": "Ukraine", "name": "Ukraine" },
+    { "id": "pl", "label": "Poland", "name": "Poland" },
+    { "id": "de", "label": "Germany", "name": "Germany" }
+  ],
+  "goal": [
+    { "id": "ads", "label": "for advertising research", "phrase": " that I can research for potential advertising placements" },
+    { "id": "explore", "label": "to explore the category", "phrase": " so I can explore this category" },
+    { "id": "team", "label": "for a team shortlist", "phrase": " for a shortlist I can share with my team" }
+  ],
+  "format": [
+    { "id": "table", "label": "as a table", "phrase": "Put the results in a table with channel name, country, category, and link." },
+    { "id": "list", "label": "as a list", "phrase": "Show the results as a short list with a link to each channel." }
+  ],
+  "previewNames": ["Demo: {name}", "Demo: {name} Digest", "Demo: {name} Notes"]
+}

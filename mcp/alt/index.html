@@ -1,0 +1,980 @@
+<!doctype html>
+<html lang="en" data-variant="a">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Telemetrio MCP — Build a Telegram Channel Shortlist in Claude or ChatGPT</title>
+<meta name="description" content="Describe a country and topic in Claude or ChatGPT and get matching Telegram channels from Telemetrio’s database. Refine the list in the same conversation." />
+<meta name="robots" content="noindex" />
+<link rel="canonical" href="https://stas656.github.io/telemetrio-test/mcp/" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://stas656.github.io/telemetrio-test/mcp/" />
+<meta property="og:title" content="Telemetrio MCP — Build a Telegram Channel Shortlist in Claude or ChatGPT" />
+<meta property="og:description" content="Describe a country and topic in Claude or ChatGPT and get matching Telegram channels from Telemetrio’s database. Refine the list in the same conversation." />
+<meta property="og:site_name" content="Telemetrio" />
+<meta property="og:locale" content="en_US" />
+<meta name="twitter:card" content="summary" />
+<meta name="theme-color" content="#006dda" />
+<link rel="icon" type="image/svg+xml" href="../../assets/logo-icon.svg" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;800&display=swap" rel="stylesheet" />
+<style>
+/* Telemetrio Design System 2.0 tokens
+   Source: Figma "Design system (Claude)" — pages Color, Shadow, Typography, Border Radius & Spacing.
+   Shared by the main landing page and the MCP landing page. */
+:root {
+  /* Alias color tokens */
+  --text-base-primary: #1c1e21;
+  --text-base-secondary: #666f79;
+  --text-base-tertiary: #7d8995;
+  --text-base-quaternary: #ffffff;
+  --text-base-primary-disabled: #919eac;
+  --text-accent: #006dda;
+  --text-info: #0059b2;
+  --text-success: #047a56;
+  --text-danger: #a92121;
+  --text-warning: #b96d23;
+  --text-link-accent-hover: #3b8fe3;
+  --text-link-base: #43494f;
+  --text-label-01: #44579a;
+  --text-label-06: #5c3f9a;
+  --text-label-08: #9a7244;
+  --text-label-10: #1c739b;
+  --border-base-primary: #f6f7f8;
+  --border-base-secondary: #e7eaed;
+  --border-base-tertiary: #c3cbd2;
+  --border-base-quaternary: #a9b3be;
+  --border-accent: #006dda;
+  --border-select: #3b8fe3;
+  --border-success: #3fae8c;
+  --border-warning: #e9a25c;
+  --border-danger: #da5a5a;
+  --icon-base-primary: #43494f;
+  --icon-base-secondary: #7d8995;
+  --icon-accent-primary: #006dda;
+  --icon-accent-secondary: #c7dff7;
+  --icon-accent-quaternary: #f6fafe;
+  --icon-success: #059669;
+  --icon-danger: #cf2929;
+  --icon-warning: #e3862b;
+  --focused-accent-primary: #3b8fe3;
+  --bg-base-primary: #ffffff;
+  --bg-base-secondary: #f6f7f8;
+  --bg-base-tertiary: #e7eaed;
+  --bg-accent: #006dda;
+  --bg-accent-hover: #3b8fe3;
+  --bg-accent-selected: #ebf3fc;
+  --bg-info: #ebf3fc;
+  --bg-success: #ebf7f3;
+  --bg-danger: #fbeeee;
+  --bg-warning: #fdf5ee;
+  --bg-label-primary-01: #5871c6;
+  --bg-label-primary-06: #7752c6;
+  --bg-label-primary-10: #2595c8;
+  --bg-label-secondary-01: #dfe5fc;
+  --bg-label-secondary-06: #e7ddfc;
+  --bg-label-secondary-08: #fcefdf;
+  --bg-label-secondary-10: #d1effd;
+  --bg-gradient-primary: linear-gradient(180deg, rgba(195,203,210,0) 0%, rgba(195,203,210,.04) 100%), #ffffff;
+  --bg-data-01: #6c8af3; --bg-data-02: #e976d6; --bg-data-03: #41ddc1; --bg-data-04: #e289f2;
+  --bg-data-05: #f5c324; --bg-data-06: #9264f3; --bg-data-07: #f36c95; --bg-data-08: #f3b56c;
+  --bg-data-09: #39c86a; --bg-data-10: #2db6f5; --bg-data-11: #bcd04b; --bg-data-12: #ff8a65;
+  /* Shadows */
+  --shadow-sm: 0 2px 4px 1px rgba(4,4,5,.04), 0 0 1px 0 rgba(4,4,5,.12);
+  --shadow-default: 0 2px 8px 1px rgba(4,4,5,.08), 0 0 1px 0 rgba(4,4,5,.12);
+  --shadow-md: 0 4px 12px 1px rgba(4,4,5,.08), 0 0 1px 0 rgba(4,4,5,.12);
+  --shadow-lg: 0 4px 14px 1px rgba(4,4,5,.12), 0 0 1px 0 rgba(4,4,5,.16);
+  --shadow-xl: 0 8px 16px 1px rgba(0,3,20,.12), 0 0 1px 0 rgba(4,4,5,.16);
+  --shadow-2xl: 0 2px 8px 1px rgba(4,4,5,.08), 0 0 1px 0 rgba(4,4,5,.12), 0 8px 20px 8px rgba(4,4,5,.10);
+  --shadow-custom-sm: 0 0 0 1px rgba(28,30,33,.08), 0 2px 4px 1px rgba(4,4,5,.04), 0 0 1px 0 rgba(4,4,5,.12);
+  /* Typefaces: Inter for product, Gilroy ExtraBold for marketing headlines */
+  --font-product: Inter, system-ui, -apple-system, sans-serif;
+  --font-marketing: Gilroy, Inter, system-ui, sans-serif;
+}
+/* Telemetrio MCP landing page. Colors, shadows and type come from assets/tokens.css. */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+body { font-family: var(--font-product); font-size: 16px; line-height: 24px; color: var(--text-base-primary); background: var(--bg-base-primary); -webkit-font-smoothing: antialiased; overflow-x: clip; }
+img, svg { display: block; }
+a { color: inherit; text-decoration: none; }
+button { font: inherit; color: inherit; background: none; border: 0; cursor: pointer; }
+ul, ol { list-style: none; }
+h1, h2, h3, summary { text-wrap: balance; }
+p, li, dd { text-wrap: pretty; }
+:focus-visible { outline: 2px solid var(--focused-accent-primary); outline-offset: 2px; border-radius: 6px; }
+[id] { scroll-margin-top: 80px; }
+.container { max-width: 1248px; margin: 0 auto; padding: 0 24px; }
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+.skip { position: absolute; left: 16px; top: -64px; z-index: 100; padding: 10px 16px; border-radius: 6px; background: var(--text-base-primary); color: var(--text-base-quaternary); font-weight: 500; }
+.skip:focus { top: 12px; }
+@media (max-width: 640px) { .container { padding: 0 16px; } }
+
+/* Preview-only notes */
+.preview-bar { background: var(--bg-label-secondary-08); border-bottom: 1px dashed var(--border-warning); font-size: 13px; line-height: 18px; padding: 8px 0; }
+.dep { margin-top: 8px; padding: 8px 10px; border: 1px dashed var(--border-warning); border-radius: 8px; background: var(--bg-warning); color: var(--text-base-primary); font-size: 13px; line-height: 18px; text-align: left; }
+.dep code { font-size: 12px; color: var(--text-base-secondary); word-break: break-all; }
+
+/* Buttons (Design System: Buttons — sizes S 36px, M 48px, radius 6px) */
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 10px; border-radius: 6px; font-weight: 500; white-space: nowrap; transition: background-color .15s ease, box-shadow .15s ease, color .15s ease; }
+.btn-m { height: 48px; padding: 0 18px; font-size: 16px; line-height: 22px; }
+.btn-s { height: 36px; padding: 0 14px; font-size: 14px; line-height: 20px; gap: 8px; }
+.btn-primary { background: var(--bg-accent); color: var(--text-base-quaternary); box-shadow: 0 0 0 1px rgba(0,89,178,.76), 0 1px 2px rgba(0,39,78,.40); }
+/* Hover uses Celtic Blue 600 instead of the DS hover tone (#3b8fe3) to keep 4.5:1 contrast for white text. */
+.btn-primary:hover { background: var(--text-info); }
+.btn-primary:focus-visible { outline: none; box-shadow: 0 0 0 2px var(--bg-base-primary), 0 0 0 4px var(--focused-accent-primary); }
+.btn-secondary { background: var(--bg-base-primary); color: var(--text-link-base); box-shadow: var(--shadow-custom-sm); }
+.btn-secondary:hover { background: var(--bg-base-secondary); color: var(--text-base-primary); }
+.btn-secondary:focus-visible { outline: none; box-shadow: 0 0 0 1px rgba(28,30,33,.08), 0 0 0 3px var(--focused-accent-primary); }
+.btn[aria-disabled="true"] { opacity: .5; cursor: not-allowed; pointer-events: none; }
+.logo-chip { display: grid; place-items: center; flex-shrink: 0; width: 28px; height: 28px; border-radius: 6px; background: var(--bg-base-primary); }
+.logo-chip svg { width: 18px; height: 18px; }
+.btn-s .logo-chip { width: 22px; height: 22px; border-radius: 4px; }
+.btn-s .logo-chip svg { width: 14px; height: 14px; }
+.btn-secondary .logo-chip { box-shadow: inset 0 0 0 1px var(--border-base-secondary); }
+.logo-chatgpt { color: var(--text-base-primary); }
+.cta-pair { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; max-width: 520px; }
+.cta-pair .btn { width: 100%; }
+@media (max-width: 560px) { .cta-pair { grid-template-columns: 1fr; } }
+.text-link { display: inline-flex; align-items: center; gap: 6px; color: var(--text-accent); font-weight: 500; border-radius: 4px; }
+.text-link:hover { color: var(--text-info); text-decoration: underline; text-underline-offset: 3px; }
+
+/* Header (Design System: Header & Nav menu — compact) */
+.site-header { position: sticky; top: 0; z-index: 50; background: var(--bg-base-primary); border-bottom: 1px solid var(--border-base-secondary); }
+.header-inner { display: flex; align-items: center; gap: 24px; height: 64px; }
+.brand { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+.brand img { height: 28px; width: auto; }
+.badge-mcp { padding: 2px 6px; border-radius: 4px; background: var(--bg-accent); color: var(--text-base-quaternary); font-size: 12px; line-height: 16px; font-weight: 600; letter-spacing: .02em; }
+.header-nav { display: flex; align-items: center; gap: 24px; flex: 1; }
+.nav-links { display: flex; gap: 24px; margin-right: auto; font-size: 14px; line-height: 20px; font-weight: 500; color: var(--text-link-base); }
+.nav-links a { padding: 6px 0; }
+.nav-links a:hover { color: var(--text-base-primary); }
+.nav-ctas { display: flex; gap: 8px; }
+.menu-btn { display: none; width: 36px; height: 36px; margin-left: auto; border-radius: 6px; place-items: center; color: var(--icon-base-primary); box-shadow: var(--shadow-custom-sm); }
+.menu-btn .i-close { display: none; }
+@media (max-width: 1179px) { .nav-ctas { display: none; } }
+@media (max-width: 959px) {
+  .menu-btn { display: grid; }
+  .header-nav { display: none; }
+  .site-header.menu-open .header-nav { display: flex; flex-direction: column; align-items: stretch; gap: 16px; position: absolute; top: 64px; left: 0; right: 0; padding: 12px 16px 20px; background: var(--bg-base-primary); border-bottom: 1px solid var(--border-base-secondary); box-shadow: var(--shadow-md); }
+  .site-header.menu-open .nav-links { flex-direction: column; gap: 0; margin: 0; font-size: 16px; }
+  .site-header.menu-open .nav-links a { display: block; padding: 12px 0; border-bottom: 1px solid var(--border-base-primary); }
+  .site-header.menu-open .nav-ctas { display: grid; grid-template-columns: 1fr; gap: 8px; }
+  .site-header.menu-open .nav-ctas .btn { height: 48px; font-size: 16px; }
+  .site-header.menu-open .menu-btn .i-open { display: none; }
+  .site-header.menu-open .menu-btn .i-close { display: block; }
+}
+
+/* Hero */
+.hero { padding: 56px 0 72px; background: var(--bg-gradient-primary); }
+.hero-grid { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: 48px; align-items: start; }
+.hero-copy { padding-top: 24px; }
+.eyebrow { font-size: 14px; line-height: 20px; font-weight: 600; color: var(--text-accent); margin-bottom: 12px; }
+h1 { font-family: var(--font-marketing); font-weight: 800; font-size: clamp(34px, 2.6vw + 20px, 56px); line-height: 1.14; letter-spacing: -.01em; }
+.lead { margin-top: 20px; font-size: 18px; line-height: 28px; color: var(--text-base-secondary); max-width: 560px; }
+.hero .cta-pair { margin-top: 32px; }
+.hero-secondary { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 20px; margin-top: 16px; }
+.microcopy { font-size: 14px; line-height: 20px; color: var(--text-base-secondary); }
+.capabilities { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 28px; }
+.capabilities li { display: inline-flex; align-items: center; gap: 6px; padding: 6px 10px; border-radius: 6px; background: var(--bg-base-primary); box-shadow: var(--shadow-custom-sm); font-size: 14px; line-height: 20px; font-weight: 500; color: var(--text-link-base); }
+.capabilities svg { color: var(--icon-success); }
+@media (max-width: 1079px) {
+  .hero-grid { grid-template-columns: minmax(0, 1fr); gap: 40px; }
+  .hero-copy { padding-top: 0; max-width: 680px; }
+}
+@media (max-width: 640px) { .hero { padding: 32px 0 56px; } .lead { font-size: 16px; line-height: 24px; } }
+
+/* Product demonstration */
+.demo { background: var(--bg-base-primary); border: 1px solid var(--border-base-secondary); border-radius: 16px; box-shadow: var(--shadow-lg); overflow: hidden; }
+.demo-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 14px 16px; border-bottom: 1px solid var(--border-base-secondary); }
+.demo-title { font-size: 14px; line-height: 20px; font-weight: 600; }
+.badge-illustrative { display: inline-flex; align-items: center; gap: 6px; flex-shrink: 0; padding: 3px 10px; border-radius: 999px; background: var(--bg-label-secondary-08); font-size: 12px; line-height: 16px; font-weight: 600; }
+.badge-illustrative::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: var(--icon-warning); }
+.demo-tabs { display: flex; flex-wrap: wrap; gap: 6px; padding: 12px 16px; }
+.demo-tab { height: 32px; padding: 0 12px; border-radius: 6px; border: 1px solid var(--border-base-secondary); font-size: 13px; line-height: 18px; font-weight: 500; color: var(--text-link-base); transition: background-color .15s ease, border-color .15s ease, color .15s ease; }
+.demo-tab:hover { background: var(--bg-base-secondary); color: var(--text-base-primary); }
+.demo-tab[aria-selected="true"] { background: var(--bg-accent-selected); border-color: var(--border-select); color: var(--text-base-primary); }
+.demo-panel { display: grid; gap: 12px; padding: 16px; background: var(--bg-base-secondary); border-top: 1px solid var(--border-base-secondary); }
+.demo-panel[hidden] { display: none; }
+.msg { font-size: 14px; line-height: 20px; }
+.msg-who { display: flex; align-items: center; gap: 6px; margin-bottom: 4px; font-size: 12px; line-height: 16px; font-weight: 600; color: var(--text-base-secondary); }
+.msg-user { justify-self: end; max-width: 88%; }
+.msg-user .msg-who { justify-content: flex-end; }
+.msg-user .msg-text { padding: 10px 14px; border-radius: 12px 12px 4px 12px; background: var(--bg-accent); color: var(--text-base-quaternary); }
+.msg-assistant { padding: 12px; border-radius: 12px; background: var(--bg-base-primary); border: 1px solid var(--border-base-secondary); }
+.source-chip { display: inline-flex; align-items: center; gap: 4px; padding: 1px 6px; border-radius: 4px; background: var(--bg-base-secondary); color: var(--text-link-base); font-weight: 500; }
+.source-chip img { width: 14px; height: 14px; }
+.results-wrap { margin-top: 10px; border: 1px solid var(--border-base-secondary); border-radius: 8px; overflow: hidden; }
+.results { width: 100%; border-collapse: collapse; font-size: 13px; line-height: 18px; }
+.results th { padding: 8px 10px; background: var(--bg-base-secondary); color: var(--text-base-secondary); font-size: 12px; line-height: 16px; font-weight: 600; text-align: left; border-bottom: 1px solid var(--border-base-secondary); }
+.results td { padding: 8px 10px; border-bottom: 1px solid var(--border-base-primary); vertical-align: middle; }
+.results tr:last-child td { border-bottom: 0; }
+.ch { display: flex; align-items: center; gap: 8px; font-weight: 600; }
+.ch-ava { display: grid; place-items: center; flex-shrink: 0; width: 24px; height: 24px; border-radius: 50%; background: var(--c); color: var(--text-base-quaternary); font-size: 11px; font-weight: 600; }
+.chip { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 12px; line-height: 16px; font-weight: 500; white-space: nowrap; }
+.tone-a { background: var(--bg-label-secondary-01); color: var(--text-label-01); }
+.tone-b { background: var(--bg-label-secondary-06); color: var(--text-label-06); }
+.link-ph { color: var(--text-base-secondary); font-size: 12px; white-space: nowrap; }
+.demo-foot { padding: 12px 16px; border-top: 1px solid var(--border-base-secondary); font-size: 12px; line-height: 16px; color: var(--text-base-secondary); }
+.demo-cta { margin-top: 20px; }
+.demo-cta-title { margin-bottom: 10px; font-size: 14px; line-height: 20px; font-weight: 600; }
+.demo-cta .cta-pair { max-width: none; }
+@media (max-width: 560px) {
+  .results-wrap { border: 0; border-radius: 0; overflow: visible; }
+  .results, .results tbody { display: block; }
+  .results thead { display: none; }
+  .results tr { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px 12px; padding: 10px 12px; margin-bottom: 8px; border: 1px solid var(--border-base-secondary); border-radius: 8px; }
+  .results tr:last-child { margin-bottom: 0; }
+  .results td { display: flex; flex-direction: column; align-items: flex-start; gap: 2px; padding: 0; border: 0; }
+  .results td::before { content: attr(data-label); font-size: 11px; line-height: 14px; font-weight: 600; color: var(--text-base-secondary); }
+  .results td:first-child { grid-column: 1 / -1; }
+  .results td:first-child::before { display: none; }
+}
+
+/* Sections */
+.section { padding: 96px 0; }
+.section-alt { background: var(--bg-base-secondary); border-block: 1px solid var(--border-base-secondary); }
+.section-head { max-width: 720px; margin-bottom: 40px; }
+.section-head h2, .access-intro h2, .final h2 { font-family: var(--font-marketing); font-weight: 800; font-size: clamp(28px, 1.6vw + 18px, 40px); line-height: 1.2; }
+.section-lead { margin-top: 12px; font-size: 18px; line-height: 28px; color: var(--text-base-secondary); }
+@media (max-width: 640px) { .section { padding: 64px 0; } .section-lead { font-size: 16px; line-height: 24px; } }
+.card { background: var(--bg-base-primary); border: 1px solid var(--border-base-secondary); border-radius: 16px; box-shadow: var(--shadow-sm); }
+
+/* How it works */
+.steps { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; counter-reset: step; }
+.step { padding: 24px; }
+.step-num { display: grid; place-items: center; width: 32px; height: 32px; border-radius: 50%; background: var(--bg-accent); color: var(--text-base-quaternary); font-size: 14px; font-weight: 600; }
+.step h3 { margin: 16px 0 6px; font-size: 20px; line-height: 26px; font-weight: 600; }
+.step p { color: var(--text-base-secondary); }
+.closing { display: flex; align-items: center; gap: 12px; margin-top: 24px; padding: 16px 20px; border-radius: 12px; background: var(--bg-accent-selected); font-size: 16px; line-height: 22px; font-weight: 600; }
+.closing img { width: 32px; height: 32px; flex-shrink: 0; }
+@media (max-width: 860px) { .steps { grid-template-columns: minmax(0, 1fr); } }
+
+/* Use cases */
+.usecases { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+.usecase { display: flex; flex-direction: column; padding: 24px; }
+.usecase-ico { display: grid; place-items: center; width: 40px; height: 40px; border-radius: 8px; background: var(--bg-accent-selected); color: var(--icon-accent-primary); }
+.usecase h3 { margin: 16px 0 6px; font-size: 20px; line-height: 26px; font-weight: 600; }
+.usecase > p { color: var(--text-base-secondary); }
+.prompt-box { margin-top: 16px; padding: 12px 14px; border-radius: 8px; background: var(--bg-base-secondary); border: 1px solid var(--border-base-secondary); }
+.prompt-label { font-size: 12px; line-height: 16px; font-weight: 600; color: var(--text-base-secondary); margin-bottom: 4px; }
+.prompt-text { font-size: 14px; line-height: 20px; color: var(--text-base-primary); user-select: all; -webkit-user-select: all; }
+.usecase .copy-btn { margin-top: 16px; align-self: flex-start; }
+.usecase .prompt-box { flex: 1; }
+@media (max-width: 960px) { .usecases { grid-template-columns: minmax(0, 1fr); } }
+
+/* Copy buttons */
+.copy-btn .i-check { display: none; }
+.copy-btn[data-state="copied"] { color: var(--text-success); }
+.copy-btn[data-state="copied"] .i-copy { display: none; }
+.copy-btn[data-state="copied"] .i-check { display: block; }
+.copy-error { margin-top: 8px; font-size: 13px; line-height: 18px; color: var(--text-danger); }
+
+/* Prompt library */
+.prompt-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+.prompt-item { display: grid; grid-template-columns: auto minmax(0, 1fr); align-items: start; gap: 4px 12px; padding: 16px; }
+.prompt-num { grid-row: span 2; display: grid; place-items: center; width: 28px; height: 28px; border-radius: 6px; background: var(--bg-base-secondary); color: var(--text-base-secondary); font-size: 12px; font-weight: 600; font-variant-numeric: tabular-nums; }
+.prompt-item .prompt-text { font-size: 16px; line-height: 22px; font-weight: 500; }
+.prompt-item .copy-btn { justify-self: start; margin-top: 8px; }
+.prompt-connect { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 20px; margin-top: 24px; font-size: 14px; line-height: 20px; color: var(--text-base-secondary); }
+@media (max-width: 760px) { .prompt-list { grid-template-columns: minmax(0, 1fr); } }
+
+/* Connection setup */
+.setup-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; align-items: start; }
+.setup-card { padding: 24px; transition: box-shadow .2s ease; }
+.setup-card.is-targeted { box-shadow: 0 0 0 2px var(--focused-accent-primary), var(--shadow-md); }
+.setup-head { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+.setup-logo { display: grid; place-items: center; width: 40px; height: 40px; border-radius: 8px; box-shadow: inset 0 0 0 1px var(--border-base-secondary); }
+.setup-logo svg { width: 24px; height: 24px; }
+.setup-head h3 { font-size: 24px; line-height: 32px; font-weight: 600; }
+.setup-head h3:focus { outline: none; }
+.status { padding: 2px 8px; border-radius: 4px; font-size: 12px; line-height: 16px; font-weight: 600; }
+.status-available { background: var(--bg-success); color: var(--text-success); }
+.status-beta { background: var(--bg-label-secondary-01); color: var(--text-label-01); }
+.status-unavailable { background: var(--bg-base-tertiary); color: var(--text-link-base); }
+.setup-head .dep { flex-basis: 100%; }
+.facts { margin-top: 20px; display: grid; gap: 16px; }
+.facts dt { font-size: 14px; line-height: 20px; font-weight: 600; }
+.facts dd { margin-top: 4px; color: var(--text-base-secondary); font-size: 14px; line-height: 20px; }
+.facts ol { list-style: decimal; padding-left: 20px; display: grid; gap: 6px; color: var(--text-base-primary); }
+.server-url { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.server-url code { padding: 4px 8px; border-radius: 6px; background: var(--bg-base-secondary); color: var(--text-base-primary); font-size: 13px; word-break: break-all; }
+.first-prompt { margin-top: 20px; padding-top: 20px; border-top: 1px solid var(--border-base-secondary); }
+.first-prompt h4 { font-size: 14px; line-height: 20px; font-weight: 600; }
+.status-msg { margin-top: 2px; font-size: 14px; line-height: 20px; color: var(--text-base-secondary); }
+.status-msg.is-connected { color: var(--text-success); font-weight: 600; }
+.first-prompt .prompt-box { margin-top: 10px; display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.setup-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 20px; margin-top: 20px; }
+.setup-actions .dep { flex-basis: 100%; margin-top: 0; }
+@media (max-width: 860px) { .setup-grid { grid-template-columns: minmax(0, 1fr); } }
+@media (max-width: 480px) { .first-prompt .prompt-box { flex-direction: column; align-items: stretch; } .setup-actions .btn { width: 100%; } }
+
+/* Access */
+.access-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.3fr); gap: 48px; align-items: start; }
+.access-intro p { margin-top: 12px; color: var(--text-base-secondary); }
+.access-list { padding: 8px 24px; }
+.access-list > div { display: grid; grid-template-columns: minmax(0, 200px) minmax(0, 1fr); gap: 4px 16px; padding: 14px 0; border-bottom: 1px solid var(--border-base-primary); }
+.access-list > div:last-child { border-bottom: 0; }
+.access-list dt { font-size: 14px; line-height: 20px; font-weight: 600; }
+.access-list dd { font-size: 14px; line-height: 20px; color: var(--text-base-secondary); }
+.access-list dd .dep { margin-top: 0; }
+@media (max-width: 860px) { .access-grid { grid-template-columns: minmax(0, 1fr); gap: 24px; } }
+@media (max-width: 520px) { .access-list > div { grid-template-columns: minmax(0, 1fr); } }
+
+/* FAQ */
+.faq { max-width: 800px; }
+.faq details { border-bottom: 1px solid var(--border-base-secondary); }
+.faq summary { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 20px 0; font-size: 18px; line-height: 26px; font-weight: 600; cursor: pointer; list-style: none; }
+.faq summary::-webkit-details-marker { display: none; }
+.faq summary::after { content: ""; flex-shrink: 0; width: 10px; height: 10px; margin-right: 4px; border-right: 2px solid var(--icon-base-secondary); border-bottom: 2px solid var(--icon-base-secondary); transform: rotate(45deg) translateY(-3px); transition: transform .2s ease; }
+.faq details[open] summary::after { transform: rotate(-135deg) translateY(-3px); }
+.faq .answer { padding: 0 0 20px; color: var(--text-base-secondary); }
+.faq .answer h4 { margin-top: 12px; color: var(--text-base-primary); font-size: 14px; font-weight: 600; }
+.faq .answer ol { list-style: decimal; padding-left: 20px; }
+
+/* Final CTA */
+.final { padding: 64px 32px; border-radius: 24px; background: var(--text-info); color: var(--text-base-quaternary); text-align: center; }
+.final p { max-width: 560px; margin: 12px auto 0; color: rgba(255,255,255,.92); font-size: 18px; line-height: 28px; }
+.final .cta-pair { margin: 32px auto 0; }
+.final .access-summary { margin-top: 16px; font-size: 14px; line-height: 20px; }
+.final .dep { max-width: 520px; margin: 16px auto 0; color: var(--text-base-primary); font-size: 13px; line-height: 18px; }
+@media (max-width: 640px) { .final { padding: 48px 20px; border-radius: 16px; } .final p { font-size: 16px; line-height: 24px; } }
+
+/* Footer */
+.site-footer { padding: 40px 0; border-top: 1px solid var(--border-base-secondary); font-size: 14px; line-height: 20px; color: var(--text-base-secondary); }
+.footer-grid { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 24px; }
+.footer-grid p { max-width: 520px; margin-top: 12px; }
+.footer-links { display: flex; flex-wrap: wrap; gap: 8px 20px; font-weight: 500; }
+.footer-links a:hover { color: var(--text-base-primary); }
+.footer-legal { margin-top: 24px; padding-top: 16px; border-top: 1px solid var(--border-base-primary); font-size: 12px; line-height: 16px; }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { transition: none !important; animation: none !important; }
+}
+/* Alternative MCP landing page (mcp/alt/). Extends mcp.css; tokens from assets/tokens.css. */
+
+/* Hero */
+.alt-hero { padding: 64px 0 80px; background: var(--bg-gradient-primary); }
+.alt-hero-head { max-width: 880px; text-align: center; }
+.alt-hero-head .lead { margin-left: auto; margin-right: auto; }
+.alt-hero-head .cta-pair { margin: 32px auto 0; }
+.alt-hero-head .microcopy { margin-top: 12px; }
+@media (max-width: 640px) { .alt-hero { padding: 32px 0 56px; } .alt-hero-head { text-align: left; } }
+
+/* Prompt builder */
+.builder { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); margin-top: 48px; overflow: hidden; box-shadow: var(--shadow-lg); scroll-margin-top: 88px; }
+.builder-compose { padding: 32px; }
+.builder-title { font-size: 20px; line-height: 26px; font-weight: 600; }
+.builder-intro { margin-top: 4px; font-size: 14px; line-height: 20px; color: var(--text-base-secondary); }
+.sentence { margin-top: 20px; font-size: 22px; line-height: 48px; font-weight: 600; }
+.pick { position: relative; display: inline-block; max-width: 100%; }
+.pick select { appearance: none; -webkit-appearance: none; max-width: 100%; height: 40px; padding: 0 32px 0 12px; border: 1px solid transparent; border-radius: 8px; background: var(--bg-accent-selected); color: var(--text-info); font: inherit; font-weight: 600; line-height: 38px; cursor: pointer; transition: border-color .15s ease, background-color .15s ease; }
+.pick select:hover { border-color: var(--border-select); }
+.pick select:focus-visible { outline: 2px solid var(--focused-accent-primary); outline-offset: 2px; }
+.pick::after { content: ""; position: absolute; right: 13px; top: 50%; width: 7px; height: 7px; border-right: 2px solid var(--text-info); border-bottom: 2px solid var(--text-info); transform: translateY(-70%) rotate(45deg); pointer-events: none; }
+.builder-output { margin-top: 20px; }
+.builder-output .prompt-text { font-size: 16px; line-height: 24px; }
+.builder-actions { margin-top: 12px; }
+.builder-connect { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 20px; margin-top: 16px; font-size: 14px; line-height: 20px; color: var(--text-base-secondary); }
+.builder-preview { display: flex; flex-direction: column; gap: 12px; padding: 24px; background: var(--bg-base-secondary); border-left: 1px solid var(--border-base-secondary); }
+.preview-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.preview-head h3 { font-size: 14px; line-height: 20px; font-weight: 600; }
+.preview-note { font-size: 12px; line-height: 16px; color: var(--text-base-secondary); }
+.builder-preview .results-wrap { background: var(--bg-base-primary); }
+.preview-list { display: grid; gap: 8px; }
+.preview-list li { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 10px 12px; border: 1px solid var(--border-base-secondary); border-radius: 8px; background: var(--bg-base-primary); font-size: 13px; line-height: 18px; }
+.preview-meta { color: var(--text-base-secondary); white-space: nowrap; }
+@media (max-width: 960px) {
+  .builder { grid-template-columns: minmax(0, 1fr); }
+  .builder-preview { border-left: 0; border-top: 1px solid var(--border-base-secondary); }
+}
+@media (max-width: 560px) {
+  .builder-compose { padding: 20px; }
+  .builder-preview { padding: 16px; }
+  .sentence { font-size: 18px; line-height: 44px; }
+  .builder-preview .results tr { background: var(--bg-base-primary); }
+  .builder-actions .btn { width: 100%; }
+}
+
+/* Refinement walkthrough */
+.refine { display: grid; grid-template-columns: minmax(0, 360px) minmax(0, 1fr); overflow: hidden; }
+.refine-side { display: flex; flex-direction: column; gap: 12px; padding: 20px; border-right: 1px solid var(--border-base-secondary); }
+.refine-side-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.refine-side-title { font-size: 14px; line-height: 20px; font-weight: 600; }
+.refine-steps { display: grid; gap: 8px; }
+.refine-step { display: flex; align-items: flex-start; gap: 10px; width: 100%; padding: 10px 12px; border: 1px solid var(--border-base-secondary); border-radius: 10px; text-align: left; font-size: 14px; line-height: 20px; color: var(--text-link-base); transition: background-color .15s ease, border-color .15s ease, color .15s ease; }
+.refine-step:hover { background: var(--bg-base-secondary); color: var(--text-base-primary); }
+.refine-step[aria-selected="true"] { border-color: var(--border-select); background: var(--bg-accent-selected); color: var(--text-base-primary); }
+.refine-num { display: grid; place-items: center; flex-shrink: 0; width: 22px; height: 22px; border-radius: 50%; background: var(--bg-base-tertiary); font-size: 12px; font-weight: 600; font-variant-numeric: tabular-nums; }
+.refine-step[aria-selected="true"] .refine-num { background: var(--bg-accent); color: var(--text-base-quaternary); }
+.refine-next { align-self: flex-start; }
+.refine-main { min-width: 0; padding: 20px; background: var(--bg-base-secondary); scroll-margin-top: 72px; }
+.refine-panel { display: grid; gap: 14px; }
+.refine-panel[hidden] { display: none; }
+.refine-reply { display: flex; align-items: center; gap: 8px; font-size: 14px; line-height: 20px; font-weight: 500; }
+.refine-reply img { flex-shrink: 0; }
+.criteria { padding: 12px 14px; border: 1px solid var(--border-base-secondary); border-radius: 10px; background: var(--bg-base-primary); }
+.criteria-label { margin-bottom: 8px; font-size: 12px; line-height: 16px; font-weight: 600; color: var(--text-base-secondary); }
+.criteria dl { display: grid; gap: 8px; }
+.criteria dl > div { display: grid; grid-template-columns: 88px minmax(0, 1fr); align-items: center; gap: 8px; }
+.criteria dt { font-size: 13px; line-height: 18px; color: var(--text-base-secondary); }
+.criteria dd { display: flex; flex-wrap: wrap; gap: 6px; }
+.crit { padding: 2px 8px; border-radius: 4px; background: var(--bg-base-tertiary); font-size: 12px; line-height: 18px; font-weight: 500; }
+.crit.is-added { background: var(--bg-success); color: var(--text-success); box-shadow: inset 0 0 0 1px var(--border-success); }
+.crit.is-removed { background: var(--bg-danger); color: var(--text-danger); text-decoration: line-through; }
+.refine-results-head { display: flex; justify-content: space-between; font-size: 12px; line-height: 16px; font-weight: 600; color: var(--text-base-secondary); }
+.refine .results-wrap { margin-top: 0; background: var(--bg-base-primary); }
+.results .group-row th { padding: 8px 10px; background: var(--bg-base-primary); color: var(--text-base-primary); font-size: 12px; line-height: 16px; font-weight: 600; text-align: left; border-bottom: 1px solid var(--border-base-secondary); }
+@media (max-width: 860px) {
+  .refine { grid-template-columns: minmax(0, 1fr); }
+  .refine-side { border-right: 0; border-bottom: 1px solid var(--border-base-secondary); }
+}
+@media (max-width: 560px) {
+  .refine-main { padding: 16px; }
+  .refine .results tr { background: var(--bg-base-primary); }
+  .results tr.group-row { display: block; margin: 12px 0 6px; padding: 0; border: 0; background: none; }
+  .results tr.group-row th { display: block; padding: 0; border: 0; background: none; font-size: 13px; }
+}
+
+/* Prompt anatomy */
+.anatomy-grid { display: grid; grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr); gap: 48px; align-items: center; }
+.anatomy-grid .section-head { margin-bottom: 0; }
+.anatomy { padding: 28px; }
+.anatomy-prompt { font-size: 22px; line-height: 40px; font-weight: 500; }
+.tag { padding: 3px 4px; border-radius: 4px; color: var(--text-base-primary); -webkit-box-decoration-break: clone; box-decoration-break: clone; }
+.tag-category { background: var(--bg-label-secondary-01); box-shadow: inset 0 -2px 0 var(--bg-label-primary-01); }
+.tag-geography { background: var(--bg-label-secondary-06); box-shadow: inset 0 -2px 0 var(--bg-label-primary-06); }
+.tag-purpose { background: var(--bg-label-secondary-08); box-shadow: inset 0 -2px 0 var(--icon-warning); }
+.tag-format { background: var(--bg-accent-selected); box-shadow: inset 0 -2px 0 var(--bg-accent); }
+.anatomy .copy-btn { margin-top: 16px; }
+.anatomy-legend { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px 24px; margin-top: 24px; padding-top: 20px; border-top: 1px solid var(--border-base-secondary); }
+.anatomy-legend dt { display: flex; align-items: center; gap: 8px; font-size: 14px; line-height: 20px; font-weight: 600; }
+.anatomy-legend dd { margin-top: 2px; font-size: 14px; line-height: 20px; color: var(--text-base-secondary); }
+.swatch { width: 12px; height: 12px; border-radius: 3px; box-shadow: none; }
+.swatch.tag-category { background: var(--bg-label-primary-01); }
+.swatch.tag-geography { background: var(--bg-label-primary-06); }
+.swatch.tag-purpose { background: var(--icon-warning); }
+.swatch.tag-format { background: var(--bg-accent); }
+@media (max-width: 960px) { .anatomy-grid { grid-template-columns: minmax(0, 1fr); gap: 24px; } }
+@media (max-width: 560px) { .anatomy { padding: 20px; } .anatomy-prompt { font-size: 18px; line-height: 34px; } .anatomy-legend { grid-template-columns: minmax(0, 1fr); } }
+
+/* Audiences */
+.audiences { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+.audience { display: flex; flex-direction: column; padding: 24px; }
+.audience h3 { font-size: 20px; line-height: 26px; font-weight: 600; }
+.audience > p { margin-top: 4px; color: var(--text-base-secondary); }
+.audience .prompt-box { flex: 1; }
+.audience .copy-btn { align-self: flex-start; margin-top: 16px; }
+@media (max-width: 760px) { .audiences { grid-template-columns: minmax(0, 1fr); } }
+
+/* Scope */
+.scope { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+.scope-col { padding: 28px; }
+.scope-col h3 { margin-bottom: 16px; font-size: 20px; line-height: 26px; font-weight: 600; }
+.scope-col ul { display: grid; gap: 12px; }
+.scope-col li { display: flex; align-items: flex-start; gap: 10px; }
+.scope-col li svg { flex-shrink: 0; margin-top: 4px; }
+.scope-does li svg { color: var(--icon-success); }
+.scope-doesnt { background: var(--bg-base-secondary); box-shadow: none; }
+.scope-doesnt li svg { color: var(--icon-base-secondary); }
+@media (max-width: 760px) { .scope { grid-template-columns: minmax(0, 1fr); } }
+
+/* Access, shown under the setup cards */
+.access-inline { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.6fr); gap: 24px; margin-top: 16px; padding: 24px; }
+.access-inline-head h3 { font-size: 20px; line-height: 26px; font-weight: 600; }
+.access-inline-head p { margin-top: 6px; font-size: 14px; line-height: 20px; color: var(--text-base-secondary); }
+.access-inline .access-list { padding: 0; }
+@media (max-width: 860px) { .access-inline { grid-template-columns: minmax(0, 1fr); } }
+
+/* Final CTA */
+.final-dark { background: var(--text-base-primary); }
+</style>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "WebPage", "name": "Telemetrio MCP — Build a Telegram Channel Shortlist in Claude or ChatGPT", "description": "Describe a country and topic in Claude or ChatGPT and get matching Telegram channels from Telemetrio’s database. Refine the list in the same conversation.", "url": "https://stas656.github.io/telemetrio-test/mcp/", "inLanguage": "en", "publisher": {"@type": "Organization", "name": "Telemetrio", "url": "https://telemetr.io"}}</script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="logo-claude" viewBox="0 0 24 24"><path d="M4.709 15.955l4.72-2.647.08-.23-.08-.128H9.2l-.79-.048-2.698-.073-2.339-.097-2.266-.122-.571-.121L0 11.784l.055-.352.48-.321.686.06 1.52.103 2.278.158 1.652.097 2.449.255h.389l.055-.157-.134-.098-.103-.097-2.358-1.596-2.552-1.688-1.336-.972-.724-.491-.364-.462-.158-1.008.656-.722.881.06.225.061.893.686 1.908 1.476 2.491 1.833.365.304.145-.103.019-.073-.164-.274-1.355-2.446-1.446-2.49-.644-1.032-.17-.619a2.97 2.97 0 01-.104-.729L6.283.134 6.696 0l.996.134.42.364.62 1.414 1.002 2.229 1.555 3.03.456.898.243.832.091.255h.158V9.01l.128-1.706.237-2.095.23-2.695.08-.76.376-.91.747-.492.584.28.48.685-.067.444-.286 1.851-.559 2.903-.364 1.942h.212l.243-.242.985-1.306 1.652-2.064.73-.82.85-.904.547-.431h1.033l.76 1.129-.34 1.166-1.064 1.347-.881 1.142-1.264 1.7-.79 1.36.073.11.188-.02 2.856-.606 1.543-.28 1.841-.315.833.388.091.395-.328.807-1.969.486-2.309.462-3.439.813-.042.03.049.061 1.549.146.662.036h1.622l3.02.225.79.522.474.638-.079.485-1.215.62-1.64-.389-3.829-.91-1.312-.329h-.182v.11l1.093 1.068 2.006 1.81 2.509 2.33.127.578-.322.455-.34-.049-2.205-1.657-.851-.747-1.926-1.62h-.128v.17l.444.649 2.345 3.521.122 1.08-.17.353-.608.213-.668-.122-1.374-1.925-1.415-2.167-1.143-1.943-.14.08-.674 7.254-.316.37-.729.28-.607-.461-.322-.747.322-1.476.389-1.924.315-1.53.286-1.9.17-.632-.012-.042-.14.018-1.434 1.967-2.18 2.945-1.726 1.845-.414.164-.717-.37.067-.662.401-.589 2.388-3.036 1.44-1.882.93-1.086-.006-.158h-.055L4.132 18.56l-1.13.146-.487-.456.061-.746.231-.243 1.908-1.312-.006.006z" fill="#D97757" fill-rule="nonzero"></path></symbol><symbol id="logo-chatgpt" viewBox="0 0 24 24" fill="currentColor"><path d="M22.2819 9.8211a5.9847 5.9847 0 0 0-.5157-4.9108 6.0462 6.0462 0 0 0-6.5098-2.9A6.0651 6.0651 0 0 0 4.9807 4.1818a5.9847 5.9847 0 0 0-3.9977 2.9 6.0462 6.0462 0 0 0 .7427 7.0966 5.98 5.98 0 0 0 .511 4.9107 6.051 6.051 0 0 0 6.5146 2.9001A5.9847 5.9847 0 0 0 13.2599 24a6.0557 6.0557 0 0 0 5.7718-4.2058 5.9894 5.9894 0 0 0 3.9977-2.9001 6.0557 6.0557 0 0 0-.7475-7.0729zm-9.022 12.6081a4.4755 4.4755 0 0 1-2.8764-1.0408l.1419-.0804 4.7783-2.7582a.7948.7948 0 0 0 .3927-.6813v-6.7369l2.02 1.1686a.071.071 0 0 1 .038.052v5.5826a4.504 4.504 0 0 1-4.4945 4.4944zm-9.6607-4.1254a4.4708 4.4708 0 0 1-.5346-3.0137l.142.0852 4.783 2.7582a.7712.7712 0 0 0 .7806 0l5.8428-3.3685v2.3324a.0804.0804 0 0 1-.0332.0615L9.74 19.9502a4.4992 4.4992 0 0 1-6.1408-1.6464zM2.3408 7.8956a4.485 4.485 0 0 1 2.3655-1.9728V11.6a.7664.7664 0 0 0 .3879.6765l5.8144 3.3543-2.0201 1.1685a.0757.0757 0 0 1-.071 0l-4.8303-2.7865A4.504 4.504 0 0 1 2.3408 7.872zm16.5963 3.8558L13.1038 8.364 15.1192 7.2a.0757.0757 0 0 1 .071 0l4.8303 2.7913a4.4944 4.4944 0 0 1-.6765 8.1042v-5.6772a.79.79 0 0 0-.407-.667zm2.0107-3.0231l-.142-.0852-4.7735-2.7818a.7759.7759 0 0 0-.7854 0L9.409 9.2297V6.8974a.0662.0662 0 0 1 .0284-.0615l4.8303-2.7866a4.4992 4.4992 0 0 1 6.6802 4.66zM8.3065 12.863l-2.02-1.1638a.0804.0804 0 0 1-.038-.0567V6.0742a4.4992 4.4992 0 0 1 7.3757-3.4537l-.142.0805L8.704 5.459a.7948.7948 0 0 0-.3927.6813zm1.0976-2.3654l2.602-1.4998 2.6069 1.4998v2.9994l-2.5974 1.4997-2.6067-1.4997Z"/></symbol></svg>
+<div class="preview-bar" role="note"><div class="container">Preview build. Highlighted notes mark values that must be verified before launch. This page is not indexed.</div></div>
+<header class="site-header">
+  <div class="container header-inner">
+    <a class="brand" href="#main" aria-label="Telemetrio MCP home"><img src="../../assets/logo-full.svg" alt="" width="144" height="28" /><span class="badge-mcp">MCP</span></a>
+    <nav class="header-nav" id="site-menu" aria-label="Main">
+      <ul class="nav-links"><li><a href="#builder">Prompt builder</a></li><li><a href="#refine">Refine</a></li><li><a href="#scope">What it does</a></li><li><a href="#connect">How to connect</a></li><li><a href="#faq">FAQ</a></li></ul>
+      <div class="nav-ctas"><a class="btn btn-s btn-primary btn-connect" href="#setup-claude" data-assistant="claude" data-location="header"><span class="logo-chip"><svg class="logo-claude" aria-hidden="true" viewBox="0 0 24 24"><use href="#logo-claude"/></svg></span><span>Connect to Claude</span></a><a class="btn btn-s btn-primary btn-connect" href="#setup-chatgpt" data-assistant="chatgpt" data-location="header"><span class="logo-chip"><svg class="logo-chatgpt" aria-hidden="true" viewBox="0 0 24 24"><use href="#logo-chatgpt"/></svg></span><span>Connect to ChatGPT</span></a></div>
+    </nav>
+    <button type="button" class="menu-btn" aria-expanded="false" aria-controls="site-menu"><span class="sr-only">Open menu</span><svg class="i-open" aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg><svg class="i-close" aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
+  </div>
+</header>
+<main id="main">
+<section class="alt-hero" aria-labelledby="hero-title">
+  <div class="container alt-hero-head">
+    <p class="eyebrow">Telemetrio MCP · For Claude and ChatGPT</p>
+    <h1 id="hero-title">Your next Telegram shortlist starts with one sentence</h1>
+    <p class="lead">Tell Claude or ChatGPT which country and topic you need. Telemetrio finds matching channels in its database, and you refine the list in the same conversation.</p>
+    <div class="cta-pair" role="group" aria-label="Connect Telemetrio to your assistant"><a class="btn btn-m btn-primary btn-connect" href="#setup-claude" data-assistant="claude" data-location="hero"><span class="logo-chip"><svg class="logo-claude" aria-hidden="true" viewBox="0 0 24 24"><use href="#logo-claude"/></svg></span><span>Connect to Claude</span></a><a class="btn btn-m btn-primary btn-connect" href="#setup-chatgpt" data-assistant="chatgpt" data-location="hero"><span class="logo-chip"><svg class="logo-chatgpt" aria-hidden="true" viewBox="0 0 24 24"><use href="#logo-chatgpt"/></svg></span><span>Connect to ChatGPT</span></a></div>
+    <p class="microcopy">Telemetrio data, inside your AI assistant.</p>
+  </div>
+  <div class="container">
+    <div class="card builder" id="builder" aria-labelledby="builder-title">
+      <div class="builder-compose">
+        <h2 class="builder-title" id="builder-title">Write your first search</h2>
+        <p class="builder-intro">Pick the details. We’ll turn them into a prompt you can send after connecting.</p>
+        <p class="sentence">Find Telegram channels about <label class="pick"><span class="sr-only">Category</span><select data-field="category"><option value="marketing">marketing</option><option value="business">business</option><option value="technology">technology</option><option value="education">education</option></select></label> in <label class="pick"><span class="sr-only">Country</span><select data-field="country"><option value="ua">Ukraine</option><option value="pl">Poland</option><option value="de">Germany</option></select></label> <label class="pick"><span class="sr-only">Purpose</span><select data-field="goal"><option value="ads">for advertising research</option><option value="explore">to explore the category</option><option value="team">for a team shortlist</option></select></label> <label class="pick"><span class="sr-only">Format</span><select data-field="format"><option value="table">as a table</option><option value="list">as a list</option></select></label><span aria-hidden="true">.</span></p>
+        <div class="prompt-box builder-output">
+          <p class="prompt-label" id="builder-prompt-label">Your prompt</p>
+          <p class="prompt-text" id="builder-prompt" data-prompt-id="builder:marketing-ua-ads-table" aria-live="polite" aria-labelledby="builder-prompt-label">Find Telegram channels about marketing in Ukraine that I can research for potential advertising placements. Put the results in a table with channel name, country, category, and link.</p>
+        </div>
+        <div class="builder-actions"><button type="button" class="btn btn-m btn-secondary copy-btn" data-copy="builder-prompt" data-prompt-id="builder:marketing-ua-ads-table" data-location="builder" data-label="Copy prompt"><svg class="i-copy" aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><svg class="i-check" aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5L20 7"/></svg><span class="copy-label">Copy prompt</span></button></div>
+        <p class="builder-connect"><span>Connect, then send this prompt:</span><a class="text-link" href="#setup-claude" data-assistant="claude" data-location="builder" data-prompt-from="builder-prompt">Connect to Claude</a><a class="text-link" href="#setup-chatgpt" data-assistant="chatgpt" data-location="builder" data-prompt-from="builder-prompt">Connect to ChatGPT</a></p>
+      </div>
+      <div class="builder-preview" aria-labelledby="builder-preview-title">
+        <div class="preview-head"><h3 id="builder-preview-title">What comes back</h3><span class="badge-illustrative">Illustrative example</span></div>
+        <div id="builder-preview-body"><div class="results-wrap"><table class="results"><caption class="sr-only">Find Telegram channels about marketing in Ukraine that I can research for potential advertising placements. Put the results in a table with channel name, country, category, and link.</caption><thead><tr><th scope="col">Channel</th><th scope="col">Country</th><th scope="col">Category</th><th scope="col">Link</th></tr></thead><tbody><tr><td data-label="Channel"><span class="ch"><span class="ch-ava" aria-hidden="true" style="--c:var(--bg-data-06)">M</span>Demo: Marketing</span></td><td data-label="Country">Ukraine</td><td data-label="Category"><span class="chip tone-a">Marketing</span></td><td data-label="Link"><span class="link-ph">Profile link<span class="sr-only"> (shown in real results)</span></span></td></tr><tr><td data-label="Channel"><span class="ch"><span class="ch-ava" aria-hidden="true" style="--c:var(--bg-data-06)">M</span>Demo: Marketing Digest</span></td><td data-label="Country">Ukraine</td><td data-label="Category"><span class="chip tone-a">Marketing</span></td><td data-label="Link"><span class="link-ph">Profile link<span class="sr-only"> (shown in real results)</span></span></td></tr><tr><td data-label="Channel"><span class="ch"><span class="ch-ava" aria-hidden="true" style="--c:var(--bg-data-12)">M</span>Demo: Marketing Notes</span></td><td data-label="Country">Ukraine</td><td data-label="Category"><span class="chip tone-a">Marketing</span></td><td data-label="Link"><span class="link-ph">Profile link<span class="sr-only"> (shown in real results)</span></span></td></tr></tbody></table></div></div>
+        <p class="preview-note">Fictional channels showing the result format. Real results come from Telemetrio’s database and include a link for each channel.</p>
+      </div>
+    </div>
+  </div>
+</section>
+<section class="section section-alt" id="refine" aria-labelledby="refine-title">
+  <div class="container">
+    <div class="section-head"><p class="eyebrow">Refine in conversation</p><h2 id="refine-title">Change the criteria without starting over</h2><p class="section-lead">Each follow-up adjusts the search. Step through an example conversation and watch the shortlist update.</p></div>
+    <div class="card refine">
+      <div class="refine-side">
+        <div class="refine-side-head"><p class="refine-side-title" id="refine-steps-label">Example conversation</p><span class="badge-illustrative">Illustrative example</span></div>
+        <ol class="refine-steps" role="tablist" aria-orientation="vertical" aria-labelledby="refine-steps-label"><li role="presentation"><button type="button" role="tab" class="refine-step" id="rstep-start" aria-controls="rpanel-start" aria-selected="true" tabindex="0" data-step="start"><span class="refine-num" aria-hidden="true">1</span><span class="refine-prompt">Find business and marketing channels in Ukraine.</span></button></li><li role="presentation"><button type="button" role="tab" class="refine-step" id="rstep-add-country" aria-controls="rpanel-add-country" aria-selected="false" tabindex="-1" data-step="add-country"><span class="refine-num" aria-hidden="true">2</span><span class="refine-prompt">Add channels from Poland.</span></button></li><li role="presentation"><button type="button" role="tab" class="refine-step" id="rstep-narrow-category" aria-controls="rpanel-narrow-category" aria-selected="false" tabindex="-1" data-step="narrow-category"><span class="refine-num" aria-hidden="true">3</span><span class="refine-prompt">Keep only the marketing channels.</span></button></li><li role="presentation"><button type="button" role="tab" class="refine-step" id="rstep-table" aria-controls="rpanel-table" aria-selected="false" tabindex="-1" data-step="table"><span class="refine-num" aria-hidden="true">4</span><span class="refine-prompt">Group them by country in a table with links.</span></button></li></ol>
+        <button type="button" class="btn btn-s btn-secondary refine-next" data-next="Next step" data-restart="Start over"><span class="refine-next-label">Next step</span><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+      </div>
+      <div class="refine-main"><div class="refine-panel" role="tabpanel" id="rpanel-start" aria-labelledby="rstep-start" tabindex="0"><p class="refine-reply"><img src="../../assets/logo-icon.svg" alt="" width="20" height="20" />Here’s an example shortlist matching your criteria.</p><div class="criteria"><p class="criteria-label">Current criteria</p><dl><div><dt>Geography</dt><dd><span class="crit">Ukraine</span></dd></div><div><dt>Category</dt><dd><span class="crit">Business</span><span class="crit">Marketing</span></dd></div><div><dt>Format</dt><dd><span class="crit">List</span></dd></div></dl></div><div class="refine-results-head"><span>Shortlist</span><span>4 channels</span></div><div class="results-wrap"><table class="results"><caption class="sr-only">Find business and marketing channels in Ukraine.</caption><thead><tr><th scope="col">Channel</th><th scope="col">Country</th><th scope="col">Category</th><th scope="col">Link</th></tr></thead><tbody><tr><td data-label="Channel"><span class="ch"><span class="ch-ava" aria-hidden="true" style="--c:var(--bg-data-09)">B</span>Demo: Business</span></td><td data-label="Country">Ukraine</td><td data-label="Category"><span class="chip tone-a">Business</span></td><td data-label="Link"><span class="link-ph">Profile link<span class="sr-only"> (shown in real results)</span></span></td></tr><tr><td data-label="Channel"><span class="ch"><span class="ch-ava" aria-hidden="true" style="--c:var(--bg-data-06)">M</span>Demo: Marketing</span></td><td data-label="Country">Ukraine</td><td data-label="Category"><span class="chip tone-b">Marketing</span></td><td data-label="Link"><span class="link-ph">Profile link<span class="sr-only"> (shown in real results)</span></span></td></tr><tr><td data-label="Channel"><span class="ch"><span class="ch-ava" aria-hidden="true" style="--c:var(--bg-data-09)">B</span>Demo: Business Digest</span></td><td data-label="Country">Ukraine</td><td data-label="Category"><span class="chip tone-a">Business</span></td><td data-label="Link"><span class="link-ph">Profile link<span class="sr-only"> (shown in real results)</span></span></td></tr><tr><td data-label="Channel"><span class="ch"><span class="ch-ava" aria-hidden="true" style="--c:var(--bg-data-12)">M</span>Demo: Marketing Notes</span></td><td data-label="Country">Ukraine</td><td data-label="Category"><span class="chip tone-b">Marketing</span></td><td data-label="Link"><span class="link-ph">Profile link<span class="sr-only"> (shown in real results)</span></span></td></tr></tbody></table></div></div><div class="refine-panel" role="tabpanel" id="rpanel-add-country" aria-labelledby="rstep-add-country" tabindex="0" hidden><p class="refine-reply"><img src="../../assets/logo-icon.svg" alt="" width="20" height="20" />I added channels from Poland in the same categories.</p><div class="criteria"><p class="criteria-label">Current criteria</p><dl><div><dt>Geography</dt><dd><span class="crit">Ukraine</span><span class="crit is-added">Poland<span class=sr-only> (added)</span></span></dd></div><div><dt>Category</dt><dd><span class="crit">Business</span><span class="crit">Marketing</span></dd></div><div><dt>Format</dt><dd><span class="crit">List</span></dd></div></dl></div><div class="refine-results-head"><span>Shortlist</span><span>6 channels</span></div><div class="results-wrap"><table class="results"><caption class="sr-only">Add channels from Poland.</caption><thead><tr><th scope="col">Channel</th><th scope="col">Country</th><th scope="col">Category</th><th scope="col">Link</th></tr></thead><tbody><tr><td data-label="Channel"><span class="ch"><span class="ch-ava" aria-hidden="true" style="--c:var(--bg-data-09)">B</span>Demo: Business</span></td><td data-label="Country">Ukraine</td><td data-label="Category"><span class="chip tone-a">Business</span></td><td data-label="Link"><span class="link-ph">Profile link<span class="sr-only"> (shown in real results)</span></span></td></tr><tr><td data-label="Channel"><span class="ch"><span class="ch-ava" aria-hidden="true" style="--c:var(--bg-data-06)">M</span>Demo: Marketing</span></td><td data-label="Country">Ukraine</td><td data-label="Category"><span class="chip tone-b">Marketing</span></td><td data-label="Link"><span class="link-ph">Profile link<span class="sr-only"> (shown in real results)</span></span></td></tr><tr><td data-label="Channel"><span class="ch"><span class="ch-ava" aria-hidden="true" style="--c:var(--bg-data-09)">B</span>Demo: Business Digest</span></td><td data-label="Country">Ukraine</td><td data-label="Category"><span class="chip tone-a">Business</span></td><td data-label="Link"><span class="link-ph">Profile link<span class="sr-only"> (shown in real results)</span></span></td></tr><tr><td data-label="Channel"><span class="ch"><span class="ch-ava" aria-hidden="true" style="--c:var(--bg-data-12)">M</span>Demo: Marketing Notes</span></td><td data-label="Country">Ukraine</td><td data-label="Category"><span class="chip tone-b">Marketing</span></td><td data-label="Link"><span class="link-ph">Profile link<span class="sr-only"> (shown in real results)</span></span></td></tr><tr><td data-label="Channel"><span class="ch"><span class="ch-ava" aria-hidden="true" style="--c:var(--bg-data-01)">B</span>Demo: Business Weekly</span></td><td data-label="Country">Poland</td><td data-label="Category"><span class="chip tone-a">Business</span></td><td data-label="Link"><span class="link-ph">Profile link<span class="sr-only"> (shown in real results)</span></span></td></tr><tr><td data-label="Channel"><span class="ch"><span class="ch-ava" aria-hidden="true" style="--c:var(--bg-data-01)">M</span>Demo: Marketing Desk</span></td><td data-label="Country">Poland</td><td data-label="Category"><span class="chip tone-b">Marketing</span></td><td data-label="Link"><span class="link-ph">Profile link<span class="sr-only"> (shown in real results)</span></span></td></tr></tbody></table></div></div><div class="refine-panel" role="tabpanel" id="rpanel-narrow-category" aria-labelledby="rstep-narrow-category" tabindex="0" hidden><p class="refine-reply"><img src="../../assets/logo-icon.svg" alt="" width="20" height="20" />Here are the channels in the Marketing category.</p><div class="criteria"><p class="criteria-label">Current criteria</p><dl><div><dt>Geography</dt><dd><span class="crit">Ukraine</span><span class="crit">Poland</span></dd></div><div><dt>Category</dt><dd><span class="crit">Marketing</span><span class="crit is-removed">Business<span class="sr-only"> (removed)</span></span></dd></div><div><dt>Format</dt><dd><span class="crit">List</span></dd></div></dl></div><div class="refine-results-head"><span>Shortlist</span><span>3 channels</span></div><div class="results-wrap"><table class="results"><caption class="sr-only">Keep only the marketing channels.</caption><thead><tr><th scope="col">Channel</th><th scope="col">Country</th><th scope="col">Category</th><th scope="col">Link</th></tr></thead><tbody><tr><td data-label="Channel"><span class="ch"><span class="ch-ava" aria-hidden="true" style="--c:var(--bg-data-06)">M</span>Demo: Marketing</span></td><td data-label="Country">Ukraine</td><td data-label="Category"><span class="chip tone-b">Marketing</span></td><td data-label="Link"><span class="link-ph">Profile link<span class="sr-only"> (shown in real results)</span></span></td></tr><tr><td data-label="Channel"><span class="ch"><span class="ch-ava" aria-hidden="true" style="--c:var(--bg-data-12)">M</span>Demo: Marketing Notes</span></td><td data-label="Country">Ukraine</td><td data-label="Category"><span class="chip tone-b">Marketing</span></td><td data-label="Link"><span class="link-ph">Profile link<span class="sr-only"> (shown in real results)</span></span></td></tr><tr><td data-label="Channel"><span class="ch"><span class="ch-ava" aria-hidden="true" style="--c:var(--bg-data-01)">M</span>Demo: Marketing Desk</span></td><td data-label="Country">Poland</td><td data-label="Category"><span class="chip tone-b">Marketing</span></td><td data-label="Link"><span class="link-ph">Profile link<span class="sr-only"> (shown in real results)</span></span></td></tr></tbody></table></div></div><div class="refine-panel" role="tabpanel" id="rpanel-table" aria-labelledby="rstep-table" tabindex="0" hidden><p class="refine-reply"><img src="../../assets/logo-icon.svg" alt="" width="20" height="20" />Here’s the table, grouped by country.</p><div class="criteria"><p class="criteria-label">Current criteria</p><dl><div><dt>Geography</dt><dd><span class="crit">Ukraine</span><span class="crit">Poland</span></dd></div><div><dt>Category</dt><dd><span class="crit">Marketing</span></dd></div><div><dt>Format</dt><dd><span class="crit is-added">Table, grouped by country<span class=sr-only> (added)</span></span><span class="crit is-removed">List<span class="sr-only"> (removed)</span></span></dd></div></dl></div><div class="refine-results-head"><span>Shortlist</span><span>3 channels</span></div><div class="results-wrap"><table class="results"><caption class="sr-only">Group them by country in a table with links.</caption><thead><tr><th scope="col">Channel</th><th scope="col">Country</th><th scope="col">Category</th><th scope="col">Link</th></tr></thead><tbody><tr class="group-row"><th colspan="4" scope="colgroup">Ukraine</th></tr><tr><td data-label="Channel"><span class="ch"><span class="ch-ava" aria-hidden="true" style="--c:var(--bg-data-06)">M</span>Demo: Marketing</span></td><td data-label="Country">Ukraine</td><td data-label="Category"><span class="chip tone-b">Marketing</span></td><td data-label="Link"><span class="link-ph">Profile link<span class="sr-only"> (shown in real results)</span></span></td></tr><tr><td data-label="Channel"><span class="ch"><span class="ch-ava" aria-hidden="true" style="--c:var(--bg-data-12)">M</span>Demo: Marketing Notes</span></td><td data-label="Country">Ukraine</td><td data-label="Category"><span class="chip tone-b">Marketing</span></td><td data-label="Link"><span class="link-ph">Profile link<span class="sr-only"> (shown in real results)</span></span></td></tr><tr class="group-row"><th colspan="4" scope="colgroup">Poland</th></tr><tr><td data-label="Channel"><span class="ch"><span class="ch-ava" aria-hidden="true" style="--c:var(--bg-data-01)">M</span>Demo: Marketing Desk</span></td><td data-label="Country">Poland</td><td data-label="Category"><span class="chip tone-b">Marketing</span></td><td data-label="Link"><span class="link-ph">Profile link<span class="sr-only"> (shown in real results)</span></span></td></tr></tbody></table></div></div></div>
+    </div>
+  </div>
+</section>
+<section class="section" id="anatomy" aria-labelledby="anatomy-title">
+  <div class="container anatomy-grid">
+    <div class="section-head"><p class="eyebrow">Prompt tips</p><h2 id="anatomy-title">What a good first prompt includes</h2><p class="section-lead">You don’t need special syntax. Four details help your assistant return a useful list.</p></div>
+    <div class="card anatomy">
+      <p class="anatomy-prompt">Find Telegram channels about <mark class="tag tag-category">education</mark> in <mark class="tag tag-geography">Germany</mark><mark class="tag tag-purpose"> that I can research for potential advertising placements</mark>. <mark class="tag tag-format">Put them in a table with a link to each channel.</mark></p>
+      <p class="sr-only" id="prompt-anatomy">Find Telegram channels about education in Germany that I can research for potential advertising placements. Put them in a table with a link to each channel.</p>
+      <button type="button" class="btn btn-s btn-secondary copy-btn" data-copy="prompt-anatomy" data-prompt-id="anatomy" data-location="anatomy" data-label="Copy prompt"><svg class="i-copy" aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><svg class="i-check" aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5L20 7"/></svg><span class="copy-label">Copy prompt</span></button>
+      <dl class="anatomy-legend"><div><dt><span class="swatch tag-category" aria-hidden="true"></span>Category</dt><dd>The topic of the channels you want.</dd></div><div><dt><span class="swatch tag-geography" aria-hidden="true"></span>Geography</dt><dd>The country the channels are classified under in Telemetrio.</dd></div><div><dt><span class="swatch tag-purpose" aria-hidden="true"></span>Purpose</dt><dd>Why you’re searching, so the assistant can organize the results.</dd></div><div><dt><span class="swatch tag-format" aria-hidden="true"></span>Format</dt><dd>A list or a table, and which columns to include.</dd></div></dl>
+    </div>
+  </div>
+</section>
+<section class="section section-alt" id="audiences" aria-labelledby="audiences-title">
+  <div class="container">
+    <div class="section-head"><p class="eyebrow">Who it’s for</p><h2 id="audiences-title">Built for Telegram channel research</h2></div>
+    <div class="audiences"><article class="card audience">
+        <h3>Marketers and advertisers</h3><p>Find channels to evaluate for your next campaign.</p>
+        <div class="prompt-box"><p class="prompt-label">Example prompt</p><p class="prompt-text" id="prompt-aud-advertisers">Find education channels in Ukraine that I can research for potential advertising placements.</p></div>
+        <button type="button" class="btn btn-s btn-secondary copy-btn" data-copy="prompt-aud-advertisers" data-prompt-id="uc-placements" data-location="audiences" data-label="Copy prompt"><svg class="i-copy" aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><svg class="i-check" aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5L20 7"/></svg><span class="copy-label">Copy prompt</span></button>
+      </article><article class="card audience">
+        <h3>Agencies</h3><p>Prepare a first channel shortlist for a client.</p>
+        <div class="prompt-box"><p class="prompt-label">Example prompt</p><p class="prompt-text" id="prompt-aud-agencies">Find marketing channels in Poland and put them in a table with channel name, category, and link.</p></div>
+        <button type="button" class="btn btn-s btn-secondary copy-btn" data-copy="prompt-aud-agencies" data-prompt-id="aud-agency" data-location="audiences" data-label="Copy prompt"><svg class="i-copy" aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><svg class="i-check" aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5L20 7"/></svg><span class="copy-label">Copy prompt</span></button>
+      </article><article class="card audience">
+        <h3>Channel owners</h3><p>See which channels share your category and country.</p>
+        <div class="prompt-box"><p class="prompt-label">Example prompt</p><p class="prompt-text" id="prompt-aud-owners">Show me channels in the Technology category in Ukraine.</p></div>
+        <button type="button" class="btn btn-s btn-secondary copy-btn" data-copy="prompt-aud-owners" data-prompt-id="aud-owner" data-location="audiences" data-label="Copy prompt"><svg class="i-copy" aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><svg class="i-check" aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5L20 7"/></svg><span class="copy-label">Copy prompt</span></button>
+      </article><article class="card audience">
+        <h3>Analysts and businesses</h3><p>Map channels in a market by country and category.</p>
+        <div class="prompt-box"><p class="prompt-label">Example prompt</p><p class="prompt-text" id="prompt-aud-analysts">Find business channels in Ukraine and Poland. Group the results by country.</p></div>
+        <button type="button" class="btn btn-s btn-secondary copy-btn" data-copy="prompt-aud-analysts" data-prompt-id="p4" data-location="audiences" data-label="Copy prompt"><svg class="i-copy" aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><svg class="i-check" aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5L20 7"/></svg><span class="copy-label">Copy prompt</span></button>
+      </article></div>
+  </div>
+</section>
+<section class="section" id="scope" aria-labelledby="scope-title">
+  <div class="container">
+    <div class="section-head"><p class="eyebrow">Scope</p><h2 id="scope-title">What Telemetrio MCP does — and what it doesn’t</h2></div>
+    <div class="scope">
+      <div class="card scope-col scope-does"><h3>It does</h3><ul><li><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5L20 7"/></svg><span>Search Telegram channels by geography</span></li><li><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5L20 7"/></svg><span>Search by category, or combine both</span></li><li><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5L20 7"/></svg><span>Work inside Claude and ChatGPT</span></li><li><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5L20 7"/></svg><span>Let you refine the results through conversation</span></li></ul></div>
+      <div class="card scope-col scope-doesnt"><h3>It doesn’t</h3><ul><li><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg><span>Buy advertising placements for you</span></li><li><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg><span>Tell you where every subscriber lives — geography is the channel’s classification in Telemetrio</span></li><li><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg><span>Return channels that aren’t in Telemetrio’s database</span></li><li><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg><span>Monitor channels in the background</span></li></ul></div>
+    </div>
+  </div>
+</section>
+<section class="section section-alt" id="connect" aria-labelledby="connect-title">
+  <div class="container">
+    <div class="section-head"><p class="eyebrow">How to connect</p><h2 id="connect-title">Connect your assistant</h2><p class="section-lead">Claude and ChatGPT are set up differently. Each card has the steps for that assistant.</p></div>
+    <div class="setup-grid"><article class="card setup-card" id="setup-claude" data-assistant="claude" aria-labelledby="setup-claude-title">
+        <div class="setup-head"><span class="setup-logo"><svg class="logo-claude" aria-hidden="true" viewBox="0 0 24 24"><use href="#logo-claude"/></svg></span><h3 id="setup-claude-title" tabindex="-1">Claude</h3><p class="dep" role="note"><b>Launch dependency:</b> Claude availability status <code>connections.json → claude.status</code></p></div>
+        <dl class="facts">
+          <div><dt>How to add Telemetrio</dt><dd><p class="dep" role="note"><b>Launch dependency:</b> Verified setup steps for Claude <code>connections.json → claude.steps</code></p></dd></div>
+          
+          <div><dt>Authentication</dt><dd><p class="dep" role="note"><b>Launch dependency:</b> Claude authentication method <code>connections.json → claude.authMethod</code></p></dd></div>
+          <div><dt>Account requirements</dt><dd><p class="dep" role="note"><b>Launch dependency:</b> Claude account requirements <code>connections.json → claude.accountRequirements</code></p></dd></div>
+          <div><dt>Known restrictions</dt><dd><p class="dep" role="note"><b>Launch dependency:</b> Known Claude restrictions (or &#x27;None known&#x27;) <code>connections.json → claude.restrictions</code></p></dd></div>
+        </dl>
+        <div class="first-prompt">
+          <h4>Your first prompt</h4>
+          <p class="status-msg" aria-live="polite">After connecting, send this prompt to your assistant.</p>
+          <div class="prompt-box"><p class="prompt-text" id="setup-claude-prompt">Find Telegram channels about marketing in Ukraine.</p><button type="button" class="btn btn-s btn-secondary copy-btn" data-copy="setup-claude-prompt" data-prompt-id="p1" data-location="setup_claude" data-label="Copy prompt"><svg class="i-copy" aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><svg class="i-check" aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5L20 7"/></svg><span class="copy-label">Copy prompt</span></button></div>
+        </div>
+        <div class="setup-actions"><span class="btn btn-m btn-primary btn-connect" aria-disabled="true"><span class="logo-chip"><svg class="logo-claude" aria-hidden="true" viewBox="0 0 24 24"><use href="#logo-claude"/></svg></span><span>Connect to Claude</span></span><p class="dep" role="note"><b>Launch dependency:</b> Claude connection URL (direct install or connector page) <code>connections.json → claude.connectionUrl</code></p><p class="dep" role="note"><b>Launch dependency:</b> Claude setup documentation URL <code>connections.json → claude.docsUrl</code></p></div>
+      </article><article class="card setup-card" id="setup-chatgpt" data-assistant="chatgpt" aria-labelledby="setup-chatgpt-title">
+        <div class="setup-head"><span class="setup-logo"><svg class="logo-chatgpt" aria-hidden="true" viewBox="0 0 24 24"><use href="#logo-chatgpt"/></svg></span><h3 id="setup-chatgpt-title" tabindex="-1">ChatGPT</h3><p class="dep" role="note"><b>Launch dependency:</b> ChatGPT availability status <code>connections.json → chatgpt.status</code></p></div>
+        <dl class="facts">
+          <div><dt>How to add Telemetrio</dt><dd><p class="dep" role="note"><b>Launch dependency:</b> Verified setup steps for ChatGPT <code>connections.json → chatgpt.steps</code></p></dd></div>
+          
+          <div><dt>Authentication</dt><dd><p class="dep" role="note"><b>Launch dependency:</b> ChatGPT authentication method <code>connections.json → chatgpt.authMethod</code></p></dd></div>
+          <div><dt>Account requirements</dt><dd><p class="dep" role="note"><b>Launch dependency:</b> ChatGPT account requirements <code>connections.json → chatgpt.accountRequirements</code></p></dd></div>
+          <div><dt>Known restrictions</dt><dd><p class="dep" role="note"><b>Launch dependency:</b> Known ChatGPT restrictions (or &#x27;None known&#x27;) <code>connections.json → chatgpt.restrictions</code></p></dd></div>
+        </dl>
+        <div class="first-prompt">
+          <h4>Your first prompt</h4>
+          <p class="status-msg" aria-live="polite">After connecting, send this prompt to your assistant.</p>
+          <div class="prompt-box"><p class="prompt-text" id="setup-chatgpt-prompt">Find Telegram channels about marketing in Ukraine.</p><button type="button" class="btn btn-s btn-secondary copy-btn" data-copy="setup-chatgpt-prompt" data-prompt-id="p1" data-location="setup_chatgpt" data-label="Copy prompt"><svg class="i-copy" aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><svg class="i-check" aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5L20 7"/></svg><span class="copy-label">Copy prompt</span></button></div>
+        </div>
+        <div class="setup-actions"><span class="btn btn-m btn-primary btn-connect" aria-disabled="true"><span class="logo-chip"><svg class="logo-chatgpt" aria-hidden="true" viewBox="0 0 24 24"><use href="#logo-chatgpt"/></svg></span><span>Connect to ChatGPT</span></span><p class="dep" role="note"><b>Launch dependency:</b> ChatGPT connection URL (direct install or connector page) <code>connections.json → chatgpt.connectionUrl</code></p><p class="dep" role="note"><b>Launch dependency:</b> ChatGPT setup documentation URL <code>connections.json → chatgpt.docsUrl</code></p></div>
+      </article></div>
+    <div class="card access-inline" id="access" aria-labelledby="access-title">
+      <div class="access-inline-head"><h3 id="access-title">What you need</h3><p>Claude and ChatGPT logos indicate compatibility, not endorsement.</p></div>
+      <dl class="access-list"><div><dt>Telemetrio plan</dt><dd><p class="dep" role="note"><b>Launch dependency:</b> Required Telemetrio plan <code>access.json → plan</code></p></dd></div><div><dt>Usage limits</dt><dd><p class="dep" role="note"><b>Launch dependency:</b> Applicable usage limits <code>access.json → usageLimits</code></p></dd></div><div><dt>Trial</dt><dd><p class="dep" role="note"><b>Launch dependency:</b> Trial availability (state &#x27;No trial&#x27; if none) <code>access.json → trial</code></p></dd></div><div><dt>Claude account</dt><dd><p class="dep" role="note"><b>Launch dependency:</b> see Claude account requirements in the setup card.</p></dd></div><div><dt>ChatGPT account</dt><dd><p class="dep" role="note"><b>Launch dependency:</b> see ChatGPT account requirements in the setup card.</p></dd></div></dl>
+    </div>
+  </div>
+</section>
+<section class="section" id="faq" aria-labelledby="faq-title">
+  <div class="container">
+    <div class="section-head"><p class="eyebrow">FAQ</p><h2 id="faq-title">Questions and answers</h2></div>
+    <div class="faq"><details><summary>What is Telemetrio MCP?</summary><div class="answer"><p>Telemetrio MCP connects Claude or ChatGPT to available Telemetrio data so you can search Telegram channels through conversation.</p></div></details><details><summary>What can I search for?</summary><div class="answer"><p>Channels matching your geography and category. You can combine criteria and refine them as the conversation continues.</p></div></details><details><summary>Can I find every Telegram channel?</summary><div class="answer"><p>Search results depend on the channels available in Telemetrio’s database. Some channels may be missing or have incomplete data.</p></div></details><details><summary>What does a channel’s geography mean?</summary><div class="answer"><p>It refers to the channel’s geographic classification in Telemetrio. It does not mean that every subscriber is located in that country.</p><p class="dep" role="note"><b>Launch dependency:</b> Adjust to the verified geographic data definition. <code>copy.json → faq.geography.verify</code></p></div></details><details><summary>Do I need coding skills?</summary><div class="answer"><p class="dep" role="note"><b>Launch dependency:</b> Write after both connection flows are validated. Only say coding is unnecessary if that is confirmed. <code>FAQ · Do I need coding skills?</code></p></div></details><details><summary>How much does it cost?</summary><div class="answer"><p class="dep" role="note"><b>Launch dependency:</b> Approved Telemetrio access terms (access.json → faqCost). <code>FAQ · How much does it cost?</code></p></div></details><details><summary>How current is the data?</summary><div class="answer"><p>Freshness varies by channel and metric. When the source provides an update time, it is shown alongside the data.</p></div></details><details><summary>Can it automatically buy advertising?</summary><div class="answer"><p>The basic workflow helps you discover channels for further evaluation. Purchasing advertising placements is not included in that workflow.</p></div></details><details><summary>How do I disconnect Telemetrio?</summary><div class="answer"><p class="dep" role="note"><b>Launch dependency:</b> Verified disconnect steps for each assistant (connections.json → disconnectSteps). <code>FAQ · How do I disconnect Telemetrio?</code></p></div></details></div>
+  </div>
+</section>
+<section class="section" aria-labelledby="final-title">
+  <div class="container">
+    <div class="final final-dark">
+      <h2 id="final-title">One sentence away from your first shortlist</h2>
+      <p>Connect Telemetrio to Claude or ChatGPT, then start with a country and a topic.</p>
+      <div class="cta-pair"><a class="btn btn-m btn-secondary btn-connect" href="#setup-claude" data-assistant="claude" data-location="final"><span class="logo-chip"><svg class="logo-claude" aria-hidden="true" viewBox="0 0 24 24"><use href="#logo-claude"/></svg></span><span>Connect to Claude</span></a><a class="btn btn-m btn-secondary btn-connect" href="#setup-chatgpt" data-assistant="chatgpt" data-location="final"><span class="logo-chip"><svg class="logo-chatgpt" aria-hidden="true" viewBox="0 0 24 24"><use href="#logo-chatgpt"/></svg></span><span>Connect to ChatGPT</span></a></div>
+      <p class="dep" role="note"><b>Launch dependency:</b> Concise, verified access requirements shown under the final buttons <code>access.json → summary</code></p>
+    </div>
+  </div>
+</section>
+</main>
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div><a class="brand" href="#main" aria-label="Telemetrio MCP home"><img src="../../assets/logo-full.svg" alt="" width="123" height="24" style="height:24px" /><span class="badge-mcp">MCP</span></a><p>Telemetrio connects Telegram channel data to your AI assistant. Describe the channels you need, review the results, and refine your search through conversation.</p></div>
+      <nav class="footer-links" aria-label="Footer"><a href="https://telemetr.io">Telemetrio website</a></nav>
+    </div>
+    <p class="footer-legal">© 2026 Telemetr.io · Claude is a trademark of Anthropic. ChatGPT is a trademark of OpenAI. Their logos indicate compatibility, not endorsement.</p>
+  </div>
+</footer>
+<p class="sr-only" aria-live="polite" id="live"></p>
+<script type="application/json" id="mcp-config">{"statusEndpoint": null, "analytics": {"dataLayer": "dataLayer"}, "experiment": {"param": "hl", "variants": ["a", "b"], "default": "a"}, "strings": {"copied": "Prompt copied", "copyFailed": "Couldn’t copy automatically. The prompt is selected — press Ctrl+C (⌘C on Mac).", "menuOpen": "Open menu", "menuClose": "Close menu", "connected": "Telemetrio is connected. Try your first search."}, "scenarios": {"business-ua": "Find Telegram channels about business and marketing in Ukraine.", "technology-pl": "Find Telegram channels about technology and startups in Poland.", "education-de": "Find Telegram channels about education and careers in Germany."}, "pageVariant": "alt", "builder": {"options": {"category": [{"id": "marketing", "label": "marketing", "name": "Marketing"}, {"id": "business", "label": "business", "name": "Business"}, {"id": "technology", "label": "technology", "name": "Technology"}, {"id": "education", "label": "education", "name": "Education"}], "country": [{"id": "ua", "label": "Ukraine", "name": "Ukraine"}, {"id": "pl", "label": "Poland", "name": "Poland"}, {"id": "de", "label": "Germany", "name": "Germany"}], "goal": [{"id": "ads", "label": "for advertising research", "phrase": " that I can research for potential advertising placements"}, {"id": "explore", "label": "to explore the category", "phrase": " so I can explore this category"}, {"id": "team", "label": "for a team shortlist", "phrase": " for a shortlist I can share with my team"}], "format": [{"id": "table", "label": "as a table", "phrase": "Put the results in a table with channel name, country, category, and link."}, {"id": "list", "label": "as a list", "phrase": "Show the results as a short list with a link to each channel."}]}, "sentence": {"start": "Find Telegram channels about", "in": "in", "end": "."}, "previewNames": ["Demo: {name}", "Demo: {name} Digest", "Demo: {name} Notes"], "columns": {"channel": "Channel", "country": "Country", "category": "Category", "link": "Link"}, "linkPlaceholder": "Profile link", "linkNote": "shown in real results", "avatarColors": ["--bg-data-01", "--bg-data-06", "--bg-data-12", "--bg-data-09"]}}</script>
+<script>
+/* Telemetrio MCP landing page behaviour. Runtime settings come from #mcp-config (generated by build.py). */
+(() => {
+  const cfg = JSON.parse(document.getElementById('mcp-config').textContent);
+  const root = document.documentElement;
+  const params = new URLSearchParams(location.search);
+  const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const live = document.getElementById('live');
+  const variant = root.dataset.variant || cfg.experiment.default;
+
+  // ---------- Analytics ----------
+  // Events go to the data layer only. Never include freeform prompt or search text.
+  const dataLayer = (window[cfg.analytics.dataLayer] = window[cfg.analytics.dataLayer] || []);
+  const debug = params.get('debug') === 'analytics';
+  const track = (event, data = {}) => {
+    const payload = { event, page_variant: cfg.pageVariant, experiment_variant: variant, ...data };
+    dataLayer.push(payload);
+    if (debug) console.info('[analytics]', payload);
+  };
+  window.telemetrioMcp = { track };
+  track('mcp_landing_view');
+
+  const announce = (msg) => { live.textContent = ''; setTimeout(() => { live.textContent = msg; }, 30); };
+  const storage = {
+    get(key) { try { return JSON.parse(sessionStorage.getItem(key)); } catch (e) { return null; } },
+    set(key, value) { try { sessionStorage.setItem(key, JSON.stringify(value)); } catch (e) { /* storage unavailable */ } },
+  };
+
+  // ---------- Mobile menu ----------
+  const header = document.querySelector('.site-header');
+  const menuBtn = document.querySelector('.menu-btn');
+  const setMenu = (open) => {
+    header.classList.toggle('menu-open', open);
+    menuBtn.setAttribute('aria-expanded', String(open));
+    menuBtn.querySelector('.sr-only').textContent = open ? cfg.strings.menuClose : cfg.strings.menuOpen;
+  };
+  menuBtn.addEventListener('click', () => setMenu(!header.classList.contains('menu-open')));
+  header.querySelectorAll('.header-nav a').forEach((a) => a.addEventListener('click', () => setMenu(false)));
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && header.classList.contains('menu-open')) { setMenu(false); menuBtn.focus(); }
+  });
+
+  // ---------- Demo scenarios (prepared content, no live search) ----------
+  const tabs = [...document.querySelectorAll('.demo-tab')];
+  let currentScenario = tabs.length ? tabs[0].dataset.scenario : null;
+  const selectTab = (tab, { focus = false, user = false } = {}) => {
+    tabs.forEach((t) => {
+      const on = t === tab;
+      t.setAttribute('aria-selected', String(on));
+      t.tabIndex = on ? 0 : -1;
+      document.getElementById(t.getAttribute('aria-controls')).hidden = !on;
+    });
+    currentScenario = tab.dataset.scenario;
+    document.querySelectorAll('.demo-cta [data-assistant]').forEach((a) => { a.dataset.scenario = currentScenario; });
+    if (focus) tab.focus();
+    if (user) track('mcp_demo_select', { scenario_id: currentScenario });
+  };
+  // "See an example" lands keyboard users on the scenario selector.
+  document.querySelectorAll('a[href="#demo"]').forEach((a) => a.addEventListener('click', () => {
+    const selected = tabs.find((t) => t.getAttribute('aria-selected') === 'true');
+    if (selected) setTimeout(() => selected.focus({ preventScroll: true }), 0);
+  }));
+  tabs.forEach((tab, i) => {
+    tab.addEventListener('click', () => selectTab(tab, { user: true }));
+    tab.addEventListener('keydown', (e) => {
+      const move = { ArrowRight: 1, ArrowLeft: -1, Home: -i, End: tabs.length - 1 - i }[e.key];
+      if (move === undefined) return;
+      e.preventDefault();
+      selectTab(tabs[(i + move + tabs.length) % tabs.length], { focus: true, user: true });
+    });
+  });
+
+  // ---------- Copy prompt ----------
+  const selectText = (el) => {
+    const range = document.createRange();
+    range.selectNodeContents(el);
+    const sel = getSelection();
+    sel.removeAllRanges();
+    sel.addRange(range);
+  };
+  const copyText = async (text, el) => {
+    try {
+      if (navigator.clipboard && window.isSecureContext) { await navigator.clipboard.writeText(text); return true; }
+    } catch (e) { /* fall through */ }
+    try {
+      selectText(el);
+      const ok = document.execCommand('copy');
+      if (ok) getSelection().removeAllRanges();
+      return ok;
+    } catch (e) { return false; }
+  };
+  document.addEventListener('click', async (e) => {
+    const btn = e.target.closest('.copy-btn');
+    if (!btn) return;
+    const target = document.getElementById(btn.dataset.copy);
+    const label = btn.querySelector('.copy-label');
+    const ok = await copyText(target.textContent.trim(), target);
+    const errorId = btn.dataset.copy + '-error';
+    document.getElementById(errorId)?.remove();
+    if (ok) {
+      btn.dataset.state = 'copied';
+      label.textContent = btn.dataset.copiedLabel || cfg.strings.copied;
+      announce(btn.dataset.copiedLabel || cfg.strings.copied);
+      clearTimeout(btn._t);
+      btn._t = setTimeout(() => { delete btn.dataset.state; label.textContent = btn.dataset.label; }, 2000);
+      if (btn.dataset.promptId) track('mcp_prompt_copy', { prompt_id: btn.dataset.promptId, cta_location: btn.dataset.location });
+    } else {
+      selectText(target);
+      const msg = document.createElement('p');
+      msg.className = 'copy-error';
+      msg.id = errorId;
+      msg.textContent = cfg.strings.copyFailed;
+      btn.insertAdjacentElement('afterend', msg);
+      announce(cfg.strings.copyFailed);
+    }
+  });
+
+  // ---------- Connection setup ----------
+  const setupSeen = new Set();
+  const setupView = (assistant, trigger) => {
+    if (setupSeen.has(assistant)) return;
+    setupSeen.add(assistant);
+    track('mcp_setup_view', { assistant, trigger });
+  };
+  // Carry the selected example (or a prompt composed on the page) into that assistant's setup card.
+  const setFirstPrompt = (assistant, text, promptId) => {
+    const el = document.getElementById(`setup-${assistant}-prompt`);
+    if (!text || !el) return;
+    el.textContent = text;
+    const btn = document.querySelector(`[data-copy="setup-${assistant}-prompt"]`);
+    if (btn && promptId) btn.dataset.promptId = promptId;
+  };
+  const openSetup = (assistant, prompt) => {
+    const card = document.getElementById(`setup-${assistant}`);
+    if (!card) return;
+    if (prompt) { setFirstPrompt(assistant, prompt.text, prompt.id); storage.set('mcp_selected_prompt', { assistant, ...prompt }); }
+    card.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
+    card.querySelector('h3').focus({ preventScroll: true });
+    card.classList.add('is-targeted');
+    setTimeout(() => card.classList.remove('is-targeted'), 1800);
+    history.replaceState(null, '', `#setup-${assistant}`);
+    setupView(assistant, 'cta');
+  };
+  document.addEventListener('click', (e) => {
+    const link = e.target.closest('a[data-assistant]');
+    if (!link) return;
+    const { assistant, location: ctaLocation, scenario, promptFrom } = link.dataset;
+    const source = promptFrom && document.getElementById(promptFrom);
+    const prompt = source ? { text: source.textContent.trim(), id: source.dataset.promptId }
+      : scenario && cfg.scenarios[scenario] ? { text: cfg.scenarios[scenario], id: `scenario:${scenario}` } : null;
+    track('mcp_connect_click', { assistant, cta_location: ctaLocation, scenario_id: (prompt && prompt.id) || null });
+    if (link.getAttribute('href').startsWith('#setup-')) { e.preventDefault(); openSetup(assistant, prompt); }
+  });
+  const saved = storage.get('mcp_selected_prompt');
+  if (saved) setFirstPrompt(saved.assistant, saved.text, saved.id);
+  if (/^#setup-(claude|chatgpt)$/.test(location.hash)) openSetup(location.hash.slice(7));
+  if ('IntersectionObserver' in window) {
+    const io = new IntersectionObserver((entries) => entries.forEach((en) => {
+      if (en.isIntersecting) { setupView(en.target.dataset.assistant, 'scroll'); io.unobserve(en.target); }
+    }), { threshold: 0.5 });
+    document.querySelectorAll('.setup-card').forEach((c) => io.observe(c));
+  }
+
+  // ---------- Confirmed connection status ----------
+  // Only a backend confirmation counts as a connection. Outbound clicks are never treated as installs.
+  // Proposed response shape: { "claude": { "connected": true, "firstSearch": false, "error": null }, "chatgpt": { ... } }
+  if (cfg.statusEndpoint) {
+    fetch(cfg.statusEndpoint, { credentials: 'include' })
+      .then((r) => (r.ok ? r.json() : null))
+      .then((status) => {
+        if (!status) return;
+        Object.entries(status).forEach(([assistant, s]) => {
+          const msg = document.querySelector(`#setup-${assistant} .status-msg`);
+          if (s && s.connected && msg) {
+            msg.textContent = cfg.strings.connected;
+            msg.classList.add('is-connected');
+            track('mcp_connection_success', { assistant });
+          }
+          if (s && s.firstSearch) track('mcp_first_search_success', { assistant });
+          if (s && s.error) track('mcp_connection_error', { assistant, error_category: s.error });
+        });
+      })
+      .catch(() => { /* status unavailable: keep the default instructions */ });
+  }
+})();
+/* Alternative MCP landing page: prompt builder and refinement walkthrough.
+   The builder only composes text to copy — it never runs a search. */
+(() => {
+  const cfg = JSON.parse(document.getElementById('mcp-config').textContent);
+  const { track } = window.telemetrioMcp;
+  const el = (tag, cls, text) => {
+    const n = document.createElement(tag);
+    if (cls) n.className = cls;
+    if (text != null) n.textContent = text;
+    return n;
+  };
+
+  // ---------- Prompt builder ----------
+  const b = cfg.builder;
+  const FIELDS = ['category', 'country', 'goal', 'format'];
+  const selects = Object.fromEntries(FIELDS.map((f) => [f, document.querySelector(`.builder select[data-field="${f}"]`)]));
+  const output = document.getElementById('builder-prompt');
+  const copyBtn = document.querySelector('[data-copy="builder-prompt"]');
+  const previewBody = document.getElementById('builder-preview-body');
+  const chosen = () => Object.fromEntries(FIELDS.map((f) => [f, b.options[f].find((o) => o.id === selects[f].value)]));
+  // Same composition rule as AltPage.compose() in lib/alt_page.py.
+  const compose = (o) => `${b.sentence.start} ${o.category.label} ${b.sentence.in} ${o.country.label}${o.goal.phrase}${b.sentence.end} ${o.format.phrase}`;
+  const avatarColor = (name) => b.avatarColors[[...name].reduce((s, ch) => s + ch.charCodeAt(0), 0) % b.avatarColors.length];
+
+  const channel = (name) => {
+    const wrap = el('span', 'ch');
+    const ava = el('span', 'ch-ava', name.replace('Demo:', '').trim().charAt(0));
+    ava.setAttribute('aria-hidden', 'true');
+    ava.style.setProperty('--c', `var(${avatarColor(name)})`);
+    wrap.append(ava, name);
+    return wrap;
+  };
+  const linkPlaceholder = () => {
+    const span = el('span', 'link-ph', b.linkPlaceholder);
+    span.append(el('span', 'sr-only', ` (${b.linkNote})`));
+    return span;
+  };
+  const renderPreview = (o, prompt) => {
+    const rows = b.previewNames.map((n) => ({ name: n.replace('{name}', o.category.name), country: o.country.name, category: o.category.name }));
+    if (o.format.id === 'list') {
+      const ul = el('ul', 'preview-list');
+      rows.forEach((r) => {
+        const li = el('li');
+        li.append(channel(r.name), el('span', 'preview-meta', `${r.country} · ${r.category}`));
+        ul.append(li);
+      });
+      previewBody.replaceChildren(ul);
+      return;
+    }
+    const table = el('table', 'results');
+    table.append(el('caption', 'sr-only', prompt));
+    const headRow = el('tr');
+    ['channel', 'country', 'category', 'link'].forEach((k) => {
+      const th = el('th', null, b.columns[k]);
+      th.scope = 'col';
+      headRow.append(th);
+    });
+    const thead = el('thead');
+    thead.append(headRow);
+    const tbody = el('tbody');
+    rows.forEach((r) => {
+      const tr = el('tr');
+      const cells = [['channel', channel(r.name)], ['country', r.country], ['category', el('span', 'chip tone-a', r.category)], ['link', linkPlaceholder()]];
+      cells.forEach(([k, content]) => {
+        const td = el('td');
+        td.dataset.label = b.columns[k];
+        td.append(content);
+        tr.append(td);
+      });
+      tbody.append(tr);
+    });
+    table.append(thead, tbody);
+    const wrap = el('div', 'results-wrap');
+    wrap.append(table);
+    previewBody.replaceChildren(wrap);
+  };
+  const update = (field) => {
+    const o = chosen();
+    const id = `builder:${FIELDS.map((f) => o[f].id).join('-')}`;
+    const prompt = compose(o);
+    output.textContent = prompt;
+    output.dataset.promptId = id;
+    copyBtn.dataset.promptId = id;
+    renderPreview(o, prompt);
+    // Only fixed option ids are sent — never freeform text.
+    if (field) track('mcp_builder_change', { field, option_id: o[field].id, prompt_id: id });
+  };
+  if (output) {
+    FIELDS.forEach((f) => selects[f].addEventListener('change', () => update(f)));
+    // Browsers may restore earlier selections on reload; resync the prompt if so.
+    if (FIELDS.some((f) => selects[f].selectedIndex !== 0)) update();
+  }
+
+  // ---------- Refinement walkthrough ----------
+  const steps = [...document.querySelectorAll('.refine-step')];
+  const nextBtn = document.querySelector('.refine-next');
+  if (!steps.length || !nextBtn) return;
+  const nextLabel = nextBtn.querySelector('.refine-next-label');
+  let current = 0;
+  const select = (i, { focus = false, user = false } = {}) => {
+    current = i;
+    steps.forEach((s, j) => {
+      const on = j === i;
+      s.setAttribute('aria-selected', String(on));
+      s.tabIndex = on ? 0 : -1;
+      document.getElementById(s.getAttribute('aria-controls')).hidden = !on;
+    });
+    nextLabel.textContent = i === steps.length - 1 ? nextBtn.dataset.restart : nextBtn.dataset.next;
+    if (focus) steps[i].focus();
+    if (user) track('mcp_demo_select', { scenario_id: `refine:${steps[i].dataset.step}` });
+  };
+  steps.forEach((s, i) => {
+    s.addEventListener('click', () => select(i, { user: true }));
+    s.addEventListener('keydown', (e) => {
+      const move = { ArrowDown: 1, ArrowRight: 1, ArrowUp: -1, ArrowLeft: -1, Home: -i, End: steps.length - 1 - i }[e.key];
+      if (move === undefined) return;
+      e.preventDefault();
+      select((i + move + steps.length) % steps.length, { focus: true, user: true });
+    });
+  });
+  // On narrow screens the shortlist sits below the steps, so bring it into view after "Next step".
+  const main = document.querySelector('.refine-main');
+  const stacked = matchMedia('(max-width: 860px)');
+  const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  nextBtn.addEventListener('click', () => {
+    select((current + 1) % steps.length, { user: true });
+    if (stacked.matches && main.getBoundingClientRect().top > innerHeight * 0.5) {
+      main.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
+    }
+  });
+})();
+</script>
+</body>
+</html>

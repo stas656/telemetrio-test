@@ -1,0 +1,54 @@
+{
+  "_note": "Prepared 'refine in conversation' walkthrough for the alternative page. Fictional channels, no links, no metrics. Validate that conversational refinement works in both assistants before launch.",
+  "steps": [
+    {
+      "id": "start",
+      "prompt": "Find business and marketing channels in Ukraine.",
+      "reply": "Here’s an example shortlist matching your criteria.",
+      "criteria": { "countries": ["Ukraine"], "categories": ["Business", "Marketing"], "format": ["List"] },
+      "rows": [
+        { "name": "Demo: Business", "country": "Ukraine", "category": "Business" },
+        { "name": "Demo: Marketing", "country": "Ukraine", "category": "Marketing" },
+        { "name": "Demo: Business Digest", "country": "Ukraine", "category": "Business" },
+        { "name": "Demo: Marketing Notes", "country": "Ukraine", "category": "Marketing" }
+      ]
+    },
+    {
+      "id": "add-country",
+      "prompt": "Add channels from Poland.",
+      "reply": "I added channels from Poland in the same categories.",
+      "criteria": { "countries": ["Ukraine", "Poland"], "categories": ["Business", "Marketing"], "format": ["List"] },
+      "rows": [
+        { "name": "Demo: Business", "country": "Ukraine", "category": "Business" },
+        { "name": "Demo: Marketing", "country": "Ukraine", "category": "Marketing" },
+        { "name": "Demo: Business Digest", "country": "Ukraine", "category": "Business" },
+        { "name": "Demo: Marketing Notes", "country": "Ukraine", "category": "Marketing" },
+        { "name": "Demo: Business Weekly", "country": "Poland", "category": "Business" },
+        { "name": "Demo: Marketing Desk", "country": "Poland", "category": "Marketing" }
+      ]
+    },
+    {
+      "id": "narrow-category",
+      "prompt": "Keep only the marketing channels.",
+      "reply": "Here are the channels in the Marketing category.",
+      "criteria": { "countries": ["Ukraine", "Poland"], "categories": ["Marketing"], "format": ["List"] },
+      "rows": [
+        { "name": "Demo: Marketing", "country": "Ukraine", "category": "Marketing" },
+        { "name": "Demo: Marketing Notes", "country": "Ukraine", "category": "Marketing" },
+        { "name": "Demo: Marketing Desk", "country": "Poland", "category": "Marketing" }
+      ]
+    },
+    {
+      "id": "table",
+      "prompt": "Group them by country in a table with links.",
+      "reply": "Here’s the table, grouped by country.",
+      "criteria": { "countries": ["Ukraine", "Poland"], "categories": ["Marketing"], "format": ["Table, grouped by country"] },
+      "groupBy": "country",
+      "rows": [
+        { "name": "Demo: Marketing", "country": "Ukraine", "category": "Marketing" },
+        { "name": "Demo: Marketing Notes", "country": "Ukraine", "category": "Marketing" },
+        { "name": "Demo: Marketing Desk", "country": "Poland", "category": "Marketing" }
+      ]
+    }
+  ]
+}

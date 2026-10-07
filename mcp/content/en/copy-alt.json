@@ -1,0 +1,104 @@
+{
+  "_note": "Copy for the alternative MCP landing page (mcp/alt/). Shared pieces — assistant names, setup cards, access terms, FAQ, footer — come from copy.json so both versions stay consistent.",
+  "meta": {
+    "title": "Telemetrio MCP — Build a Telegram Channel Shortlist in Claude or ChatGPT",
+    "description": "Describe a country and topic in Claude or ChatGPT and get matching Telegram channels from Telemetrio’s database. Refine the list in the same conversation."
+  },
+  "nav": [
+    { "label": "Prompt builder", "href": "#builder" },
+    { "label": "Refine", "href": "#refine" },
+    { "label": "What it does", "href": "#scope" },
+    { "label": "How to connect", "href": "#connect" },
+    { "label": "FAQ", "href": "#faq" }
+  ],
+  "hero": {
+    "eyebrow": "Telemetrio MCP · For Claude and ChatGPT",
+    "headline": "Your next Telegram shortlist starts with one sentence",
+    "lead": "Tell Claude or ChatGPT which country and topic you need. Telemetrio finds matching channels in its database, and you refine the list in the same conversation.",
+    "microcopy": "Telemetrio data, inside your AI assistant."
+  },
+  "builder": {
+    "title": "Write your first search",
+    "intro": "Pick the details. We’ll turn them into a prompt you can send after connecting.",
+    "sentence": { "start": "Find Telegram channels about", "in": "in", "end": "." },
+    "labels": { "category": "Category", "country": "Country", "goal": "Purpose", "format": "Format" },
+    "promptLabel": "Your prompt",
+    "previewLabel": "What comes back",
+    "previewBadge": "Illustrative example",
+    "previewNote": "Fictional channels showing the result format. Real results come from Telemetrio’s database and include a link for each channel.",
+    "connectLead": "Connect, then send this prompt:"
+  },
+  "refine": {
+    "eyebrow": "Refine in conversation",
+    "heading": "Change the criteria without starting over",
+    "lead": "Each follow-up adjusts the search. Step through an example conversation and watch the shortlist update.",
+    "badge": "Illustrative example",
+    "stepsLabel": "Example conversation",
+    "criteriaLabel": "Current criteria",
+    "criteria": { "countries": "Geography", "categories": "Category", "format": "Format" },
+    "resultsLabel": "Shortlist",
+    "channelsCount": "{n} channels",
+    "added": "added",
+    "removed": "removed",
+    "next": "Next step",
+    "restart": "Start over"
+  },
+  "anatomy": {
+    "eyebrow": "Prompt tips",
+    "heading": "What a good first prompt includes",
+    "lead": "You don’t need special syntax. Four details help your assistant return a useful list.",
+    "parts": [
+      { "text": "Find Telegram channels about " },
+      { "text": "education", "tag": "category" },
+      { "text": " in " },
+      { "text": "Germany", "tag": "geography" },
+      { "text": " that I can research for potential advertising placements", "tag": "purpose" },
+      { "text": ". " },
+      { "text": "Put them in a table with a link to each channel.", "tag": "format" }
+    ],
+    "tags": {
+      "category": { "label": "Category", "text": "The topic of the channels you want." },
+      "geography": { "label": "Geography", "text": "The country the channels are classified under in Telemetrio." },
+      "purpose": { "label": "Purpose", "text": "Why you’re searching, so the assistant can organize the results." },
+      "format": { "label": "Format", "text": "A list or a table, and which columns to include." }
+    }
+  },
+  "audiences": {
+    "eyebrow": "Who it’s for",
+    "heading": "Built for Telegram channel research",
+    "items": [
+      { "id": "advertisers", "title": "Marketers and advertisers", "text": "Find channels to evaluate for your next campaign.", "promptId": "uc-placements" },
+      { "id": "agencies", "title": "Agencies", "text": "Prepare a first channel shortlist for a client.", "promptId": "aud-agency" },
+      { "id": "owners", "title": "Channel owners", "text": "See which channels share your category and country.", "promptId": "aud-owner" },
+      { "id": "analysts", "title": "Analysts and businesses", "text": "Map channels in a market by country and category.", "promptId": "p4" }
+    ]
+  },
+  "scope": {
+    "eyebrow": "Scope",
+    "heading": "What Telemetrio MCP does — and what it doesn’t",
+    "doesLabel": "It does",
+    "doesntLabel": "It doesn’t",
+    "does": [
+      "Search Telegram channels by geography",
+      "Search by category, or combine both",
+      "Work inside Claude and ChatGPT",
+      "Let you refine the results through conversation"
+    ],
+    "doesnt": [
+      "Buy advertising placements for you",
+      "Tell you where every subscriber lives — geography is the channel’s classification in Telemetrio",
+      "Return channels that aren’t in Telemetrio’s database",
+      "Monitor channels in the background"
+    ]
+  },
+  "connect": {
+    "eyebrow": "How to connect",
+    "heading": "Connect your assistant",
+    "lead": "Claude and ChatGPT are set up differently. Each card has the steps for that assistant.",
+    "accessHeading": "What you need"
+  },
+  "final": {
+    "heading": "One sentence away from your first shortlist",
+    "text": "Connect Telemetrio to Claude or ChatGPT, then start with a country and a topic."
+  }
+}

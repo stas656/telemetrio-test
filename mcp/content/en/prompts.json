@@ -5,6 +5,9 @@
     { "id": "uc-explore", "group": "useCase", "text": "Show me Telegram channels about technology in Poland." },
     { "id": "uc-shortlist", "group": "useCase", "text": "Put these results in a table with channel name, country, category, and link." },
 
+    { "id": "aud-agency", "group": "audience", "text": "Find marketing channels in Poland and put them in a table with channel name, category, and link." },
+    { "id": "aud-owner", "group": "audience", "text": "Show me channels in the Technology category in Ukraine." },
+
     { "id": "p1", "group": "library", "text": "Find Telegram channels about marketing in Ukraine." },
     { "id": "p2", "group": "library", "text": "Show me technology channels in Poland." },
     { "id": "p3", "group": "library", "text": "Find channels in the Education category in Germany." },

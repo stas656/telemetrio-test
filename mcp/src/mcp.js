@@ -12,10 +12,11 @@
   const dataLayer = (window[cfg.analytics.dataLayer] = window[cfg.analytics.dataLayer] || []);
   const debug = params.get('debug') === 'analytics';
   const track = (event, data = {}) => {
-    const payload = { event, experiment_variant: variant, ...data };
+    const payload = { event, page_variant: cfg.pageVariant, experiment_variant: variant, ...data };
     dataLayer.push(payload);
     if (debug) console.info('[analytics]', payload);
   };
+  window.telemetrioMcp = { track };
   track('mcp_landing_view');
 
   const announce = (msg) => { live.textContent = ''; setTimeout(() => { live.textContent = msg; }, 30); };
@@ -120,19 +121,18 @@
     setupSeen.add(assistant);
     track('mcp_setup_view', { assistant, trigger });
   };
-  // Carry the selected example prompt into that assistant's setup card.
-  const setFirstPrompt = (assistant, scenarioId) => {
-    const prompt = cfg.scenarios[scenarioId];
+  // Carry the selected example (or a prompt composed on the page) into that assistant's setup card.
+  const setFirstPrompt = (assistant, text, promptId) => {
     const el = document.getElementById(`setup-${assistant}-prompt`);
-    if (!prompt || !el) return;
-    el.textContent = prompt;
+    if (!text || !el) return;
+    el.textContent = text;
     const btn = document.querySelector(`[data-copy="setup-${assistant}-prompt"]`);
-    if (btn) btn.dataset.promptId = `scenario:${scenarioId}`;
+    if (btn && promptId) btn.dataset.promptId = promptId;
   };
-  const openSetup = (assistant, scenarioId) => {
+  const openSetup = (assistant, prompt) => {
     const card = document.getElementById(`setup-${assistant}`);
     if (!card) return;
-    if (scenarioId) { setFirstPrompt(assistant, scenarioId); storage.set('mcp_selected_prompt', { assistant, scenarioId }); }
+    if (prompt) { setFirstPrompt(assistant, prompt.text, prompt.id); storage.set('mcp_selected_prompt', { assistant, ...prompt }); }
     card.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
     card.querySelector('h3').focus({ preventScroll: true });
     card.classList.add('is-targeted');
@@ -143,12 +143,15 @@
   document.addEventListener('click', (e) => {
     const link = e.target.closest('a[data-assistant]');
     if (!link) return;
-    const { assistant, location: ctaLocation, scenario } = link.dataset;
-    track('mcp_connect_click', { assistant, cta_location: ctaLocation, scenario_id: scenario || null });
-    if (link.getAttribute('href').startsWith('#setup-')) { e.preventDefault(); openSetup(assistant, scenario); }
+    const { assistant, location: ctaLocation, scenario, promptFrom } = link.dataset;
+    const source = promptFrom && document.getElementById(promptFrom);
+    const prompt = source ? { text: source.textContent.trim(), id: source.dataset.promptId }
+      : scenario && cfg.scenarios[scenario] ? { text: cfg.scenarios[scenario], id: `scenario:${scenario}` } : null;
+    track('mcp_connect_click', { assistant, cta_location: ctaLocation, scenario_id: (prompt && prompt.id) || null });
+    if (link.getAttribute('href').startsWith('#setup-')) { e.preventDefault(); openSetup(assistant, prompt); }
   });
   const saved = storage.get('mcp_selected_prompt');
-  if (saved) setFirstPrompt(saved.assistant, saved.scenarioId);
+  if (saved) setFirstPrompt(saved.assistant, saved.text, saved.id);
   if (/^#setup-(claude|chatgpt)$/.test(location.hash)) openSetup(location.hash.slice(7));
   if ('IntersectionObserver' in window) {
     const io = new IntersectionObserver((entries) => entries.forEach((en) => {
